@@ -60,7 +60,7 @@ function CategoryCard({ category }: { category: Category }) {
       href={getCategoryHref(category)}
       className="group flex flex-col items-center text-center"
     >
-      <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#eadfce] bg-[#f3ede3] shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#c3a06a] group-hover:shadow-md group-hover:shadow-zinc-900/10 sm:h-[72px] sm:w-[72px]">
+      <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#eadfce] bg-[#f3ede3] shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#c3a06a] group-hover:shadow-md group-hover:shadow-zinc-900/10 sm:h-18 sm:w-18">
         <Image
           src={safeImage(category.image)}
           alt={category.name}

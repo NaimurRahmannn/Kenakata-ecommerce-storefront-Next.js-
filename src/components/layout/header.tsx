@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Search, ShoppingCart, UserRound, X } from "lucide-react";
+import { Heart, Search, ShoppingCart, Truck, UserRound, X } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 
@@ -17,7 +17,10 @@ export function Header() {
     <header className="border-b border-[#e8dfd3] bg-[#fffdf8] text-zinc-950">
       <div className="bg-zinc-950 px-4 py-2 text-center text-sm text-white">
         <div className="relative mx-auto max-w-7xl">
-          <p>Free shipping on orders over $99</p>
+          <p className="flex items-center justify-center gap-2">
+            <Truck className="h-4 w-4" color="#9a763d" aria-hidden="true" />
+            Free shipping on orders over $99
+          </p>
           <button
             type="button"
             aria-label="Dismiss shipping announcement"
