@@ -7,6 +7,47 @@ import { getCategories } from "@/lib/api";
 import { safeImage } from "@/lib/utils";
 import type { Category } from "@/types/category";
 
+const fallbackCategories: Category[] = [
+  {
+    id: 1001,
+    name: "Fashion",
+    slug: "fashion",
+    image: "/images/fashion.webp",
+  },
+  {
+    id: 1002,
+    name: "Beauty",
+    slug: "beauty",
+    image: "/images/Beauty.webp",
+  },
+  {
+    id: 1003,
+    name: "Home & Living",
+    slug: "home-living",
+    image: "/images/Home%20%26%20Living.webp",
+  },
+  {
+    id: 1004,
+    name: "Accessories",
+    slug: "accessories",
+    image: "/images/accessories.webp",
+  },
+  {
+    id: 1005,
+    name: "Sports",
+    slug: "sports",
+    image: "/images/Sport_balls.svg.png",
+  },
+];
+
+const brokenCategoryImageHosts = ["placeimg.com"];
+
+function hasUsableCategoryImage(category: Category) {
+  return brokenCategoryImageHosts.every(
+    (host) => !category.image.toLowerCase().includes(host)
+  );
+}
+
 function getCategoryHref(category: Category) {
   const categoryValue = category.slug ?? String(category.id);
 
@@ -19,7 +60,7 @@ function CategoryCard({ category }: { category: Category }) {
       href={getCategoryHref(category)}
       className="group flex flex-col items-center text-center"
     >
-      <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#eadfce] bg-[#f3ede3] shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#c3a06a] group-hover:shadow-md group-hover:shadow-zinc-900/10 sm:h-18 sm:w-18">
+      <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#eadfce] bg-[#f3ede3] shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#c3a06a] group-hover:shadow-md group-hover:shadow-zinc-900/10 sm:h-[72px] sm:w-[72px]">
         <Image
           src={safeImage(category.image)}
           alt={category.name}
@@ -40,9 +81,19 @@ export async function CategoriesSection() {
   let categories: Category[] = [];
 
   try {
-    categories = (await getCategories()).slice(0, 8);
+    const apiCategories = (await getCategories())
+      .filter(hasUsableCategoryImage)
+      .slice(0, 4);
+    const apiCategoryNames = new Set(
+      apiCategories.map((category) => category.name.toLowerCase())
+    );
+    const missingFallbackCategories = fallbackCategories.filter(
+      (category) => !apiCategoryNames.has(category.name.toLowerCase())
+    );
+
+    categories = [...apiCategories, ...missingFallbackCategories].slice(0, 9);
   } catch {
-    categories = [];
+    categories = fallbackCategories;
   }
 
   return (
@@ -53,7 +104,7 @@ export async function CategoriesSection() {
         </p>
 
         {categories.length > 0 ? (
-          <div className="mt-6 grid grid-cols-3 gap-x-4 gap-y-7 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 lg:gap-x-8">
+          <div className="mt-6 grid grid-cols-3 gap-x-4 gap-y-7 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 lg:gap-x-8">
             {categories.map((category) => (
               <CategoryCard key={category.id} category={category} />
             ))}
