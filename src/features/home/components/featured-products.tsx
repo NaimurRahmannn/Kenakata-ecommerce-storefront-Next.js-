@@ -94,7 +94,7 @@ export async function FeaturedProducts() {
   }
 
   return (
-    <section className="bg-[#faf7f1] pb-16 pt-8 sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-12">
+    <section className="bg-[#faf7f1] pb-16 pt-8 sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-10">
       <Container>
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
