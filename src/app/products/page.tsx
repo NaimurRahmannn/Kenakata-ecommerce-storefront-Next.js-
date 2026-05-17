@@ -1,14 +1,50 @@
+import Image from "next/image";
 import Link from "next/link";
+import { ChevronDown, ChevronUp, Search, SlidersHorizontal } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
+import { ProductGrid } from "@/features/products/components/product-grid";
+import { getProducts } from "@/lib/api";
+import type { Product } from "@/types/product";
 
-const filterSections = ["Categories", "Price Range", "Brand", "Rating"];
+const filterSections = [
+  {
+    title: "Categories",
+    items: ["Electronics", "Fashion", "Home & Living", "Beauty"],
+  },
+  {
+    title: "Price Range",
+    items: ["$10", "$500+"],
+  },
+  {
+    title: "Brand",
+    items: ["Apple", "Samsung", "Sony", "Nike"],
+  },
+  {
+    title: "Rating",
+    items: ["5 stars", "4 stars", "3 stars", "2 stars & up"],
+  },
+];
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  let products: Product[] = [];
+
+  try {
+    products = (await getProducts()).slice(0, 50);
+  } catch {
+    products = [];
+  }
+
   return (
     <div className="bg-[#fffdf8] text-zinc-950">
-      <Container className="py-10 sm:py-12 lg:py-14">
+      <Container className="py-8 sm:py-9 lg:py-10">
         <section aria-labelledby="shop-title">
+           <h1
+            id="shop-title"
+            className="mt-4 text-5xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
+          >
+            Shop
+          </h1>
           <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
             <Link
               href="/"
@@ -21,88 +57,98 @@ export default function ProductsPage() {
             </span>
             <span className="font-medium text-[#9a763d]">Shop</span>
           </nav>
-
-          <h1
-            id="shop-title"
-            className="mt-4 text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl"
-          >
-            Shop
-          </h1>
         </section>
 
-        <section className="mt-8 overflow-hidden rounded-2xl border border-[#e8dfd3] bg-[#faf7f1] shadow-sm">
-          <div className="grid min-h-80 items-center gap-8 p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] lg:p-10">
+        <section className="relative mt-6 overflow-hidden rounded-lg border border-[#e8dfd3] bg-[#faf7f1] shadow-sm">
+          <Image
+            src="/images/hero-img.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="absolute inset-0 object-cover object-[78%_center]"
+          />
+          <div className="absolute inset-0 bg-linear-to-r from-[#faf7f1] via-[#faf7f1]/92 to-[#faf7f1]/8" />
+
+          <div className="relative flex min-h-44 items-center p-6 sm:p-8 lg:min-h-46 lg:p-9">
             <div className="max-w-xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[#9a763d]">
+              <p className="text-sm font-medium text-zinc-950">
                 Discover our premium collection
               </p>
-              <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-zinc-950 sm:text-5xl">
+              <h2 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-zinc-950 sm:text-5xl">
                 Quality. Style. Value.
               </h2>
-              <p className="mt-4 text-base leading-7 text-zinc-600">
+              <p className="mt-3 text-base leading-7 text-zinc-600">
                 Handpicked products, just for you.
               </p>
-            </div>
-
-            <div className="relative hidden min-h-60 lg:block">
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-[#fffdf8] via-[#f2e8d7] to-[#d8c3a3]" />
-              <div className="absolute bottom-8 left-12 h-7 w-64 rounded-full bg-zinc-950/10 blur-md" />
-              <div className="absolute bottom-12 left-10 h-10 w-72 rounded-md bg-[#d8c3a3]" />
-              <div className="absolute bottom-22 left-20 h-24 w-44 rounded-t-4xl rounded-b-lg border border-[#b88a39]/40 bg-[#fffdf8] shadow-xl shadow-zinc-900/10" />
-              <div className="absolute bottom-36 left-32 h-14 w-20 rounded-t-full border-x border-t border-[#b88a39]/50" />
-              <div className="absolute bottom-26.5 left-52 h-28 w-16 rounded-lg border border-[#d8c3a3] bg-white/70 shadow-lg" />
-              <div className="absolute bottom-29 left-61 h-20 w-8 rounded-full bg-[#b88a39]/20" />
-              <div className="absolute right-10 top-10 h-28 w-44 rounded-xl border border-white/70 bg-white/45 p-4 shadow-lg backdrop-blur-sm">
-                <div className="h-3 w-20 rounded-full bg-[#b88a39]/50" />
-                <div className="mt-4 h-2 w-32 rounded-full bg-zinc-950/15" />
-                <div className="mt-2 h-2 w-24 rounded-full bg-zinc-950/10" />
-                <div className="mt-6 h-8 w-24 rounded-md bg-zinc-950" />
-              </div>
             </div>
           </div>
         </section>
 
         <section
-          className="mt-10 grid gap-6 lg:grid-cols-[260px_1fr]"
+          className="mt-6 grid gap-6 lg:grid-cols-[260px_1fr]"
           aria-label="Shop content"
         >
-          <aside className="h-fit rounded-xl border border-[#e8dfd3] bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-zinc-950">Filters</h2>
-            <div className="mt-5 space-y-4">
-              {filterSections.map((section) => (
+          <aside className="h-fit overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-[#eee5d8] px-4 py-3">
+              <h2 className="inline-flex items-center gap-2 text-base font-semibold text-zinc-950">
+                <SlidersHorizontal className="h-4 w-4 text-[#9a763d]" />
+                Filters
+              </h2>
+              <span className="text-sm text-zinc-500">Clear all</span>
+            </div>
+
+            <div>
+              {filterSections.map((section, sectionIndex) => (
                 <div
-                  key={section}
-                  className="border-t border-[#eee5d8] pt-4 first:border-t-0 first:pt-0"
+                  key={section.title}
+                  className="border-b border-[#eee5d8] px-4 py-4 last:border-b-0"
                 >
-                  <h3 className="text-sm font-semibold text-zinc-950">
-                    {section}
-                  </h3>
-                  <div className="mt-3 space-y-2">
-                    <div className="h-2.5 w-4/5 rounded-full bg-[#efe6d7]" />
-                    <div className="h-2.5 w-3/5 rounded-full bg-[#f5efe6]" />
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-zinc-950">
+                      {section.title}
+                    </h3>
+                    {sectionIndex === 0 ? (
+                      <ChevronUp className="h-4 w-4 text-zinc-500" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 text-zinc-500" />
+                    )}
+                  </div>
+                  <div className="mt-3 space-y-2.5">
+                    {section.items.map((item) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <span className="h-3.5 w-3.5 rounded border border-[#d6cbbc] bg-[#fffdf8]" />
+                        <span className="text-sm text-zinc-700">{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
           </aside>
 
-          <div className="rounded-xl border border-[#e8dfd3] bg-white p-5 shadow-sm">
+          <div>
             <div className="grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-center">
-              <div className="rounded-md border border-[#ded4c5] bg-[#fffdf8] px-4 py-3 text-sm text-zinc-400">
+              <div className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-400 shadow-sm">
+                <Search className="h-5 w-5 text-zinc-950" />
                 Search products...
               </div>
-              <div className="rounded-md border border-[#ded4c5] bg-[#fffdf8] px-4 py-3 text-sm font-medium text-zinc-700">
-                Sort by: Newest
+              <div className="flex min-w-44 items-center justify-between gap-6 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm">
+                <span>
+                  Sort by: <span className="font-medium text-zinc-950">Newest</span>
+                </span>
+                <ChevronDown className="h-4 w-4 text-zinc-500" />
               </div>
-              <div className="rounded-md border border-[#ded4c5] bg-[#fffdf8] px-4 py-3 text-sm font-medium text-zinc-700">
-                Show: 12
+              <div className="flex min-w-36 items-center justify-between gap-6 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm">
+                <span>
+                  Show: <span className="font-medium text-zinc-950">12</span>
+                </span>
+                <ChevronDown className="h-4 w-4 text-zinc-500" />
               </div>
             </div>
 
-            <div className="mt-5 flex min-h-105 items-center justify-center rounded-xl border border-dashed border-[#d8c3a3] bg-[#faf7f1] px-6 text-center">
-              <p className="text-sm font-medium text-zinc-600">
-                Product grid will be added in the next step.
-              </p>
+            <div className="mt-5">
+              <ProductGrid products={products} />
             </div>
           </div>
         </section>
