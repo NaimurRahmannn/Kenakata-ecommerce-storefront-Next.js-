@@ -14,11 +14,14 @@ async function fetcher<T>(
   options: FetcherOptions = {}
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
+  const { revalidate, ...requestInit } = options;
+  const shouldUseNext = requestInit.cache !== "no-store" && revalidate !== false;
+  const nextConfig = shouldUseNext ? { revalidate: revalidate ?? 3600 } : undefined;
 
   try {
     const response = await fetch(url, {
-      next: { revalidate: options.revalidate ?? 3600 },
-      ...options,
+      ...(nextConfig ? { next: nextConfig } : {}),
+      ...requestInit,
     });
 
     if (!response.ok) {
@@ -35,13 +38,34 @@ async function fetcher<T>(
 /**
  * Fetch all products from the API
  */
-export async function getProducts(limit?: number): Promise<Product[]> {
-  const endpoint = limit
-    ? `${API_ENDPOINTS.products}?limit=${limit}`
+interface ProductsQuery {
+  limit?: number;
+  offset?: number;
+}
+
+export async function getProducts(
+  options?: number | ProductsQuery,
+  fetchOptions: FetcherOptions = {}
+): Promise<Product[]> {
+  const query = typeof options === "number" ? { limit: options } : options;
+  const searchParams = new URLSearchParams();
+
+  if (query?.limit !== undefined) {
+    searchParams.set("limit", String(query.limit));
+  }
+
+  if (query?.offset !== undefined) {
+    searchParams.set("offset", String(query.offset));
+  }
+
+  const queryString = searchParams.toString();
+  const endpoint = queryString
+    ? `${API_ENDPOINTS.products}?${queryString}`
     : API_ENDPOINTS.products;
 
   return fetcher<Product[]>(endpoint, {
     revalidate: 3600, // 1 hour
+    ...fetchOptions,
   });
 }
 

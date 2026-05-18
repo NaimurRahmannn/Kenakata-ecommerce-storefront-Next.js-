@@ -7,7 +7,10 @@ import { ProductGrid } from "@/features/products/components/product-grid";
 import { getProducts } from "@/lib/api";
 import type { Product } from "@/types/product";
 
+export const dynamic = "force-dynamic";
+
 const ITEMS_PER_PAGE = 12;
+const TOTAL_PRODUCTS = 60;
 
 const filterSections = [
   {
@@ -29,32 +32,44 @@ const filterSections = [
 ];
 
 interface ProductsPageProps {
-  searchParams?: {
-    page?: string | string[];
-  };
+  searchParams?:
+    | {
+        page?: string | string[];
+      }
+    | Promise<{
+        page?: string | string[];
+      }>;
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const resolvedSearchParams = await Promise.resolve(searchParams);
+  const pageParam = Array.isArray(resolvedSearchParams?.page)
+    ? resolvedSearchParams?.page[0]
+    : resolvedSearchParams?.page;
+  const parsedPage = Number.parseInt(pageParam ?? "1", 10);
+  const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
+  let totalProducts: Product[] = [];
   let products: Product[] = [];
 
   try {
-    products = (await getProducts()).slice(0, 50);
+    totalProducts = await getProducts(TOTAL_PRODUCTS, { cache: "no-store" });
   } catch {
-    products = [];
+    totalProducts = [];
   }
 
-  const pageParam = Array.isArray(searchParams?.page)
-    ? searchParams?.page[0]
-    : searchParams?.page;
-  const parsedPage = Number.parseInt(pageParam ?? "1", 10);
-  const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
-  const totalPages = Math.max(1, Math.ceil(products.length / ITEMS_PER_PAGE));
+  const totalPages = Math.max(1, Math.ceil(TOTAL_PRODUCTS / ITEMS_PER_PAGE));
   const currentPage = Math.min(Math.max(safePage, 1), totalPages);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProducts = products.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    products = await getProducts(
+      { limit: ITEMS_PER_PAGE, offset },
+      { cache: "no-store" }
+    );
+  } catch {
+    products = totalProducts.slice(offset, offset + ITEMS_PER_PAGE);
+  }
+
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
@@ -163,14 +178,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </div>
               <div className="flex min-w-36 items-center justify-between gap-6 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm">
                 <span>
-                  Show: <span className="font-medium text-zinc-950">16</span>
+                  Show: <span className="font-medium text-zinc-950">12</span>
                 </span>
                 <ChevronDown className="h-4 w-4 text-zinc-500" />
               </div>
             </div>
 
             <div className="mt-5">
-              <ProductGrid products={paginatedProducts} />
+              <ProductGrid products={products} />
             </div>
 
             {totalPages > 1 && (
