@@ -4,6 +4,7 @@ import { Heart, Star } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 import { ProductImageGallery } from "@/features/products/components/product-image-gallery";
+import { ProductDetailsTabs } from "@/features/products/components/product-details-tabs";
 import { getProductById } from "@/lib/api";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/product";
@@ -149,18 +150,7 @@ export default async function ProductDetailsPage({
           </div>
         </section>
 
-        <section className="mt-12 rounded-xl border border-[#e8dfd3] bg-white p-6 shadow-sm">
-          <div className="flex flex-wrap items-center gap-6 border-b border-[#eee5d8] pb-3 text-sm font-medium text-zinc-600">
-            <span className="border-b-2 border-[#c3a06a] pb-2 text-zinc-950">
-              Description
-            </span>
-            <span>Reviews</span>
-            <span>Shipping &amp; Returns</span>
-          </div>
-          <p className="mt-4 text-sm leading-7 text-zinc-600">
-            {product.description}
-          </p>
-        </section>
+        <ProductDetailsTabs description={product.description} />
       </Container>
     </div>
   );
