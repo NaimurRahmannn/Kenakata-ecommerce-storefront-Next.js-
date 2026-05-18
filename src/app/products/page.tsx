@@ -279,7 +279,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 <SlidersHorizontal className="h-4 w-4 text-[#9a763d]" />
                 Filters
               </h2>
-              <span className="text-sm text-zinc-500">Clear all</span>
+             
             </div>
             {filtersPanel}
           </aside>

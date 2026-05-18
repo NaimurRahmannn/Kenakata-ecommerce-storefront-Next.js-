@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { PriceRangeSlider } from "@/features/products/components/price-range-slider";
 import type { Category } from "@/types/category";
@@ -32,7 +31,7 @@ export function FiltersPanel({
       <div className="border-b border-[#eee5d8] px-4 py-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-zinc-950">Categories</h3>
-          <ChevronUp className="h-4 w-4 text-zinc-500" />
+  
         </div>
         <div className="mt-3 space-y-2.5">
           <Link
@@ -82,7 +81,7 @@ export function FiltersPanel({
       <div className="border-b border-[#eee5d8] px-4 py-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-zinc-950">Price Range</h3>
-          <ChevronDown className="h-4 w-4 text-zinc-500" />
+          
         </div>
         <div className="mt-3">
           <PriceRangeSlider
