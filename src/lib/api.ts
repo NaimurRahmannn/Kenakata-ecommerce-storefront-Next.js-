@@ -41,6 +41,7 @@ async function fetcher<T>(
 interface ProductsQuery {
   limit?: number;
   offset?: number;
+  categorySlug?: string;
 }
 
 export async function getProducts(
@@ -56,6 +57,10 @@ export async function getProducts(
 
   if (query?.offset !== undefined) {
     searchParams.set("offset", String(query.offset));
+  }
+
+  if (query?.categorySlug) {
+    searchParams.set("categorySlug", query.categorySlug);
   }
 
   const queryString = searchParams.toString();

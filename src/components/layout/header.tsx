@@ -1,6 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Search, ShoppingCart, Truck, UserRound, X } from "lucide-react";
+import {
+  Heart,
+  Search,
+  ShoppingCart,
+  SlidersHorizontal,
+  Truck,
+  UserRound,
+  X,
+} from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Container } from "@/components/shared/container";
 
@@ -13,6 +24,22 @@ const navigationLinks = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const isShopPage = pathname?.startsWith("/products");
+
+  const openFilters = () => {
+    if (!pathname) {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set("filters", "1");
+    const queryString = params.toString();
+    router.push(queryString ? `${pathname}?${queryString}` : pathname);
+  };
+
   return (
     <header className="border-b border-[#e8dfd3] bg-[#fffdf8] text-zinc-950">
       <div className="bg-zinc-950 px-4 py-2 text-center text-sm text-white">
@@ -88,6 +115,16 @@ export function Header() {
               >
                 <UserRound className="h-5 w-5" aria-hidden="true" />
               </Link>
+              {isShopPage && (
+                <button
+                  type="button"
+                  onClick={openFilters}
+                  aria-label="Open filters"
+                  className="rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] lg:hidden"
+                >
+                  <SlidersHorizontal className="h-5 w-5" aria-hidden="true" />
+                </button>
+              )}
             </div>
           </div>
 

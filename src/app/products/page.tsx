@@ -1,33 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, ChevronUp, Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
-import { PriceRangeSlider } from "@/features/products/components/price-range-slider";
+import { FiltersDrawer } from "@/features/products/components/filters-drawer";
+import { FiltersPanel } from "@/features/products/components/filters-panel";
 import { ProductGrid } from "@/features/products/components/product-grid";
 import { SortSelect } from "@/features/products/components/sort-select";
-import { getProducts } from "@/lib/api";
+import { getCategories, getProducts } from "@/lib/api";
+import type { Category } from "@/types/category";
 import type { Product } from "@/types/product";
 
 export const dynamic = "force-dynamic";
 
 const ITEMS_PER_PAGE = 12;
 const TOTAL_PRODUCTS = 60;
-
-const filterSections = [
-  {
-    title: "Categories",
-    items: ["Electronics", "Fashion", "Home & Living", "Beauty"],
-  },
-  {
-    title: "Price Range",
-    items: [],
-  },
-  {
-    title: "Rating",
-    items: ["5 stars", "4 stars", "3 stars", "2 stars & up"],
-  },
-];
 
 interface ProductsPageProps {
   searchParams?:
@@ -37,6 +24,7 @@ interface ProductsPageProps {
         sort?: string | string[];
         min?: string | string[];
         max?: string | string[];
+        category?: string | string[];
       }
     | Promise<{
         page?: string | string[];
@@ -44,6 +32,7 @@ interface ProductsPageProps {
         sort?: string | string[];
         min?: string | string[];
         max?: string | string[];
+        category?: string | string[];
       }>;
 }
 
@@ -64,23 +53,56 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const maxParam = Array.isArray(resolvedSearchParams?.max)
     ? resolvedSearchParams?.max[0]
     : resolvedSearchParams?.max;
+  const categoryParam = Array.isArray(resolvedSearchParams?.category)
+    ? resolvedSearchParams?.category[0]
+    : resolvedSearchParams?.category;
   const parsedPage = Number.parseInt(pageParam ?? "1", 10);
   const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
   const searchTerm = queryParam?.trim() ?? "";
   const normalizedSearch = searchTerm.toLowerCase();
   const parsedMinPrice = Number.parseFloat(minParam ?? "");
   const parsedMaxPrice = Number.parseFloat(maxParam ?? "");
+  const selectedCategory = categoryParam?.trim() ?? "";
+  const normalizedCategory = selectedCategory.toLowerCase();
   const sortValue =
     sortParam === "price-asc" || sortParam === "price-desc"
       ? sortParam
       : "newest";
   let totalProducts: Product[] = [];
+  let categories: Category[] = [];
+
+  const categorySlug = normalizedCategory.length > 0 ? normalizedCategory : undefined;
 
   try {
-    totalProducts = await getProducts(TOTAL_PRODUCTS, { cache: "no-store" });
+    totalProducts = await getProducts(
+      { limit: TOTAL_PRODUCTS, categorySlug },
+      { cache: "no-store" }
+    );
   } catch {
     totalProducts = [];
   }
+
+  try {
+    categories = await getCategories();
+  } catch {
+    categories = [];
+  }
+
+  const categoryFilteredProducts = normalizedCategory
+    ? totalProducts.filter((product) => {
+        const productSlug = product.category?.slug?.toLowerCase();
+        const productName = product.category?.name ?? "";
+        const productNameSlug = productName
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, "-");
+
+        return (
+          productSlug === normalizedCategory ||
+          productNameSlug === normalizedCategory
+        );
+      })
+    : totalProducts;
 
   const priceValues = totalProducts
     .map((product) => product.price)
@@ -106,7 +128,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const hasPriceFilter = rangeMin > minPrice || rangeMax < maxPrice;
 
   const filteredProducts = normalizedSearch
-    ? totalProducts.filter((product) => {
+    ? categoryFilteredProducts.filter((product) => {
         const searchableText = [
           product.title,
           product.description,
@@ -118,7 +140,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
         return searchableText.includes(normalizedSearch);
       })
-    : totalProducts;
+    : categoryFilteredProducts;
 
   const priceFilteredProducts = filteredProducts.filter(
     (product) => product.price >= rangeMin && product.price <= rangeMax
@@ -139,8 +161,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const products = sortedProducts.slice(offset, offset + ITEMS_PER_PAGE);
   const searchQuery = searchTerm.length > 0 ? searchTerm : undefined;
+  const categoryQuery = selectedCategory.length > 0 ? selectedCategory : undefined;
   const sortQuery = sortValue !== "newest" ? sortValue : undefined;
-  const buildPageHref = (pageNumber: number) => {
+  const buildBaseParams = () => {
     const params = new URLSearchParams();
 
     if (searchQuery) {
@@ -156,11 +179,45 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       params.set("max", String(rangeMax));
     }
 
+    return params;
+  };
+
+  const buildCategoryHref = (slug?: string) => {
+    const params = buildBaseParams();
+
+    if (slug) {
+      params.set("category", slug);
+    }
+
+    params.set("page", "1");
+    return `/products?${params.toString()}`;
+  };
+
+  const buildPageHref = (pageNumber: number) => {
+    const params = buildBaseParams();
+
+    if (categoryQuery) {
+      params.set("category", categoryQuery);
+    }
+
     params.set("page", String(pageNumber));
     return `/products?${params.toString()}`;
   };
 
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+  const filtersPanel = (
+    <FiltersPanel
+      categories={categories}
+      categoryQuery={categoryQuery}
+      normalizedCategory={normalizedCategory}
+      buildCategoryHref={buildCategoryHref}
+      minPrice={minPrice}
+      maxPrice={maxPrice}
+      rangeMin={rangeMin}
+      rangeMax={rangeMax}
+      step={5}
+    />
+  );
 
   return (
     <div className="bg-[#fffdf8] text-zinc-950">
@@ -216,7 +273,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           className="mt-6 grid gap-6 lg:grid-cols-[260px_1fr]"
           aria-label="Shop content"
         >
-          <aside className="h-fit overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm">
+          <aside className="hidden h-fit overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm lg:block">
             <div className="flex items-center justify-between border-b border-[#eee5d8] px-4 py-3">
               <h2 className="inline-flex items-center gap-2 text-base font-semibold text-zinc-950">
                 <SlidersHorizontal className="h-4 w-4 text-[#9a763d]" />
@@ -224,50 +281,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </h2>
               <span className="text-sm text-zinc-500">Clear all</span>
             </div>
-
-            <div>
-              {filterSections.map((section, sectionIndex) => (
-                <div
-                  key={section.title}
-                  className="border-b border-[#eee5d8] px-4 py-4 last:border-b-0"
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-zinc-950">
-                      {section.title}
-                    </h3>
-                    {sectionIndex === 0 ? (
-                      <ChevronUp className="h-4 w-4 text-zinc-500" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 text-zinc-500" />
-                    )}
-                  </div>
-                  {section.title === "Price Range" ? (
-                    <div className="mt-3">
-                      <PriceRangeSlider
-                        min={minPrice}
-                        max={maxPrice}
-                        valueMin={rangeMin}
-                        valueMax={rangeMax}
-                        step={5}
-                      />
-                    </div>
-                  ) : (
-                    <div className="mt-3 space-y-2.5">
-                      {section.items.map((item) => (
-                        <div key={item} className="flex items-center gap-2">
-                          <span className="h-3.5 w-3.5 rounded border border-[#d6cbbc] bg-[#fffdf8]" />
-                          <span className="text-sm text-zinc-700">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            {filtersPanel}
           </aside>
 
           <div>
-            <div className="grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-center">
+            <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
               <form
                 action="/products"
                 method="get"
@@ -275,6 +293,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               >
                 {sortQuery && (
                   <input type="hidden" name="sort" value={sortQuery} />
+                )}
+                {categoryQuery && (
+                  <input type="hidden" name="category" value={categoryQuery} />
                 )}
                 {hasPriceFilter && (
                   <>
@@ -297,6 +318,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </form>
               <SortSelect currentSort={sortValue} />
             </div>
+            <FiltersDrawer showTrigger={false} openParam="filters">
+              {filtersPanel}
+            </FiltersDrawer>
 
             <div className="mt-5">
               <ProductGrid products={products} />
