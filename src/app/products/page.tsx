@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronDown, ChevronUp, Search, SlidersHorizontal } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
+import { PriceRangeSlider } from "@/features/products/components/price-range-slider";
 import { ProductGrid } from "@/features/products/components/product-grid";
 import { SortSelect } from "@/features/products/components/sort-select";
 import { getProducts } from "@/lib/api";
@@ -20,11 +21,7 @@ const filterSections = [
   },
   {
     title: "Price Range",
-    items: ["$10", "$500+"],
-  },
-  {
-    title: "Brand",
-    items: ["Apple", "Samsung", "Sony", "Nike"],
+    items: [],
   },
   {
     title: "Rating",
@@ -38,11 +35,15 @@ interface ProductsPageProps {
         page?: string | string[];
         q?: string | string[];
         sort?: string | string[];
+        min?: string | string[];
+        max?: string | string[];
       }
     | Promise<{
         page?: string | string[];
         q?: string | string[];
         sort?: string | string[];
+        min?: string | string[];
+        max?: string | string[];
       }>;
 }
 
@@ -57,10 +58,18 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const sortParam = Array.isArray(resolvedSearchParams?.sort)
     ? resolvedSearchParams?.sort[0]
     : resolvedSearchParams?.sort;
+  const minParam = Array.isArray(resolvedSearchParams?.min)
+    ? resolvedSearchParams?.min[0]
+    : resolvedSearchParams?.min;
+  const maxParam = Array.isArray(resolvedSearchParams?.max)
+    ? resolvedSearchParams?.max[0]
+    : resolvedSearchParams?.max;
   const parsedPage = Number.parseInt(pageParam ?? "1", 10);
   const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
   const searchTerm = queryParam?.trim() ?? "";
   const normalizedSearch = searchTerm.toLowerCase();
+  const parsedMinPrice = Number.parseFloat(minParam ?? "");
+  const parsedMaxPrice = Number.parseFloat(maxParam ?? "");
   const sortValue =
     sortParam === "price-asc" || sortParam === "price-desc"
       ? sortParam
@@ -72,6 +81,29 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   } catch {
     totalProducts = [];
   }
+
+  const priceValues = totalProducts
+    .map((product) => product.price)
+    .filter((price) => Number.isFinite(price));
+  const minPrice = priceValues.length > 0 ? Math.min(...priceValues) : 0;
+  const maxPrice = priceValues.length > 0 ? Math.max(...priceValues) : 0;
+  const safeMinPrice = Number.isNaN(parsedMinPrice)
+    ? minPrice
+    : parsedMinPrice;
+  const safeMaxPrice = Number.isNaN(parsedMaxPrice)
+    ? maxPrice
+    : parsedMaxPrice;
+  const clampedMinPrice = Math.min(
+    Math.max(safeMinPrice, minPrice),
+    maxPrice
+  );
+  const clampedMaxPrice = Math.min(
+    Math.max(safeMaxPrice, minPrice),
+    maxPrice
+  );
+  const rangeMin = Math.min(clampedMinPrice, clampedMaxPrice);
+  const rangeMax = Math.max(clampedMinPrice, clampedMaxPrice);
+  const hasPriceFilter = rangeMin > minPrice || rangeMax < maxPrice;
 
   const filteredProducts = normalizedSearch
     ? totalProducts.filter((product) => {
@@ -88,12 +120,16 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       })
     : totalProducts;
 
+  const priceFilteredProducts = filteredProducts.filter(
+    (product) => product.price >= rangeMin && product.price <= rangeMax
+  );
+
   const sortedProducts =
     sortValue === "price-asc"
-      ? [...filteredProducts].sort((a, b) => a.price - b.price)
+      ? [...priceFilteredProducts].sort((a, b) => a.price - b.price)
       : sortValue === "price-desc"
-        ? [...filteredProducts].sort((a, b) => b.price - a.price)
-        : filteredProducts;
+        ? [...priceFilteredProducts].sort((a, b) => b.price - a.price)
+        : priceFilteredProducts;
 
   const totalPages = Math.max(
     1,
@@ -113,6 +149,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
     if (sortQuery) {
       params.set("sort", sortQuery);
+    }
+
+    if (hasPriceFilter) {
+      params.set("min", String(rangeMin));
+      params.set("max", String(rangeMax));
     }
 
     params.set("page", String(pageNumber));
@@ -200,14 +241,26 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                       <ChevronDown className="h-4 w-4 text-zinc-500" />
                     )}
                   </div>
-                  <div className="mt-3 space-y-2.5">
-                    {section.items.map((item) => (
-                      <div key={item} className="flex items-center gap-2">
-                        <span className="h-3.5 w-3.5 rounded border border-[#d6cbbc] bg-[#fffdf8]" />
-                        <span className="text-sm text-zinc-700">{item}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {section.title === "Price Range" ? (
+                    <div className="mt-3">
+                      <PriceRangeSlider
+                        min={minPrice}
+                        max={maxPrice}
+                        valueMin={rangeMin}
+                        valueMax={rangeMax}
+                        step={5}
+                      />
+                    </div>
+                  ) : (
+                    <div className="mt-3 space-y-2.5">
+                      {section.items.map((item) => (
+                        <div key={item} className="flex items-center gap-2">
+                          <span className="h-3.5 w-3.5 rounded border border-[#d6cbbc] bg-[#fffdf8]" />
+                          <span className="text-sm text-zinc-700">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -222,6 +275,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               >
                 {sortQuery && (
                   <input type="hidden" name="sort" value={sortQuery} />
+                )}
+                {hasPriceFilter && (
+                  <>
+                    <input type="hidden" name="min" value={rangeMin} />
+                    <input type="hidden" name="max" value={rangeMax} />
+                  </>
                 )}
                 <Search className="h-5 w-5 text-zinc-950" />
                 <input
