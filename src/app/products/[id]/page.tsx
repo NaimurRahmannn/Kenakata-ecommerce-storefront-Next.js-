@@ -1,11 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Heart, Star } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
+import { ProductImageGallery } from "@/features/products/components/product-image-gallery";
 import { getProductById } from "@/lib/api";
-import { formatCurrency, safeImage } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/product";
 
 interface ProductDetailsPageProps {
@@ -40,10 +40,6 @@ export default async function ProductDetailsPage({
     notFound();
   }
 
-  const images = product.images?.filter(Boolean) ?? [];
-  const mainImage = safeImage(images[0]);
-  const thumbnails = images.slice(0, 4);
-
   return (
     <div className="bg-[#fffdf8] text-zinc-950">
       <Container className="py-8 sm:py-10 lg:py-12">
@@ -70,44 +66,7 @@ export default async function ProductDetailsPage({
         </nav>
 
         <section className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-4">
-            <div className="relative overflow-hidden rounded-xl border border-[#e8dfd3] bg-[#faf7f1] p-6 shadow-sm">
-              <div className="relative aspect-[4/5]">
-                <Image
-                  src={mainImage}
-                  alt={product.title}
-                  fill
-                  sizes="(min-width: 1024px) 48vw, 100vw"
-                  className="object-contain"
-                  unoptimized
-                />
-              </div>
-            </div>
-
-            {thumbnails.length > 0 && (
-              <div className="flex flex-wrap gap-3">
-                {thumbnails.map((image, index) => (
-                  <div
-                    key={`${image}-${index}`}
-                    className={`relative h-20 w-20 overflow-hidden rounded-lg border bg-[#faf7f1] ${
-                      index === 0
-                        ? "border-[#c3a06a]"
-                        : "border-[#e8dfd3]"
-                    }`}
-                  >
-                    <Image
-                      src={safeImage(image)}
-                      alt=""
-                      fill
-                      sizes="80px"
-                      className="object-contain p-2"
-                      unoptimized
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductImageGallery images={product.images} title={product.title} />
 
           <div className="space-y-6">
             <div>
