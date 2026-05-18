@@ -14,7 +14,7 @@ import type { Product } from "@/types/product";
 export const dynamic = "force-dynamic";
 
 const ITEMS_PER_PAGE = 12;
-const TOTAL_PRODUCTS = 60;
+const TOTAL_PRODUCTS = 1000;
 
 interface ProductsPageProps {
   searchParams?:

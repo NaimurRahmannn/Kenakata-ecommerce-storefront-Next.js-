@@ -4,7 +4,7 @@ import { Heart, Star } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 import { ProductImageGallery } from "@/features/products/components/product-image-gallery";
-import { ProductDetailsTabs } from "@/features/products/components/product-details-tabs";
+import { RelatedProducts } from "@/features/products/components/related-products";
 import { getProductById } from "@/lib/api";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/product";
@@ -150,7 +150,11 @@ export default async function ProductDetailsPage({
           </div>
         </section>
 
-        <ProductDetailsTabs description={product.description} />
+     
+        <RelatedProducts
+          currentProductId={product.id}
+          categoryId={product.category?.id}
+        />
       </Container>
     </div>
   );
