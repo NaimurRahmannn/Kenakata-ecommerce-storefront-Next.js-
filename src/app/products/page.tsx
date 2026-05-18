@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp, Search, SlidersHorizontal } from "lucide-react"
 
 import { Container } from "@/components/shared/container";
 import { ProductGrid } from "@/features/products/components/product-grid";
+import { SortSelect } from "@/features/products/components/sort-select";
 import { getProducts } from "@/lib/api";
 import type { Product } from "@/types/product";
 
@@ -36,10 +37,12 @@ interface ProductsPageProps {
     | {
         page?: string | string[];
         q?: string | string[];
+        sort?: string | string[];
       }
     | Promise<{
         page?: string | string[];
         q?: string | string[];
+        sort?: string | string[];
       }>;
 }
 
@@ -51,10 +54,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const queryParam = Array.isArray(resolvedSearchParams?.q)
     ? resolvedSearchParams?.q[0]
     : resolvedSearchParams?.q;
+  const sortParam = Array.isArray(resolvedSearchParams?.sort)
+    ? resolvedSearchParams?.sort[0]
+    : resolvedSearchParams?.sort;
   const parsedPage = Number.parseInt(pageParam ?? "1", 10);
   const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
   const searchTerm = queryParam?.trim() ?? "";
   const normalizedSearch = searchTerm.toLowerCase();
+  const sortValue =
+    sortParam === "price-asc" || sortParam === "price-desc"
+      ? sortParam
+      : "newest";
   let totalProducts: Product[] = [];
 
   try {
@@ -78,19 +88,31 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       })
     : totalProducts;
 
+  const sortedProducts =
+    sortValue === "price-asc"
+      ? [...filteredProducts].sort((a, b) => a.price - b.price)
+      : sortValue === "price-desc"
+        ? [...filteredProducts].sort((a, b) => b.price - a.price)
+        : filteredProducts;
+
   const totalPages = Math.max(
     1,
-    Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+    Math.ceil(sortedProducts.length / ITEMS_PER_PAGE)
   );
   const currentPage = Math.min(Math.max(safePage, 1), totalPages);
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  const products = filteredProducts.slice(offset, offset + ITEMS_PER_PAGE);
+  const products = sortedProducts.slice(offset, offset + ITEMS_PER_PAGE);
   const searchQuery = searchTerm.length > 0 ? searchTerm : undefined;
+  const sortQuery = sortValue !== "newest" ? sortValue : undefined;
   const buildPageHref = (pageNumber: number) => {
     const params = new URLSearchParams();
 
     if (searchQuery) {
       params.set("q", searchQuery);
+    }
+
+    if (sortQuery) {
+      params.set("sort", sortQuery);
     }
 
     params.set("page", String(pageNumber));
@@ -103,7 +125,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <div className="bg-[#fffdf8] text-zinc-950">
       <Container className="py-8 sm:py-9 lg:py-10">
         <section aria-labelledby="shop-title">
-           <h1
+          <h1
             id="shop-title"
             className="mt-4 text-5xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
           >
@@ -198,6 +220,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 method="get"
                 className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm"
               >
+                {sortQuery && (
+                  <input type="hidden" name="sort" value={sortQuery} />
+                )}
                 <Search className="h-5 w-5 text-zinc-950" />
                 <input
                   type="search"
@@ -211,18 +236,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   Search
                 </button>
               </form>
-              <div className="flex min-w-44 items-center justify-between gap-6 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm">
-                <span>
-                  Sort by: <span className="font-medium text-zinc-950">Newest</span>
-                </span>
-                <ChevronDown className="h-4 w-4 text-zinc-500" />
-              </div>
-              <div className="flex min-w-36 items-center justify-between gap-6 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm">
-                <span>
-                  Show: <span className="font-medium text-zinc-950">12</span>
-                </span>
-                <ChevronDown className="h-4 w-4 text-zinc-500" />
-              </div>
+              <SortSelect currentSort={sortValue} />
             </div>
 
             <div className="mt-5">
