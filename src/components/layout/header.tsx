@@ -15,6 +15,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Container } from "@/components/shared/container";
 import { useCartStore } from "@/store/cart-store";
+import { useWishlistStore } from "@/store/wishlist-store";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -34,6 +35,7 @@ export function Header() {
     (total, item) => total + item.quantity,
     0
   );
+  const wishlistCount = useWishlistStore((state) => state.items.length);
 
   const openFilters = () => {
     if (!pathname) {
@@ -89,19 +91,12 @@ export function Header() {
             <div className="flex items-center gap-1 sm:gap-2 lg:col-start-3 lg:row-start-1 lg:justify-end">
               <button
                 type="button"
-                aria-label="Search products"
-                className="rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]"
-              >
-                <Search className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                aria-label="Wishlist"
+                aria-label={`Wishlist (${wishlistCount} items)`}
                 className="relative rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]"
               >
                 <Heart className="h-5 w-5" aria-hidden="true" />
                 <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#b88a39] px-1 text-[10px] font-semibold leading-none text-white">
-                  0
+                  {wishlistCount}
                 </span>
               </button>
               <Link

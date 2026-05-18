@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/shared/container";
-import { ProductDetailsTabs } from "@/features/products/components/product-details-tabs";
 import { ProductImageGallery } from "@/features/products/components/product-image-gallery";
 import { ProductInfo } from "@/features/products/components/product-info";
 import { RelatedProducts } from "@/features/products/components/related-products";
@@ -70,8 +69,6 @@ export default async function ProductDetailsPage({
           <ProductImageGallery images={product.images} title={product.title} />
           <ProductInfo product={product} />
         </section>
-
-        <ProductDetailsTabs description={product.description} />
 
         <RelatedProducts
           currentProductId={product.id}

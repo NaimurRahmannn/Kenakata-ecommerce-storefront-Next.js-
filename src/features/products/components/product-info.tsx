@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import { formatCurrency } from "@/lib/utils";
 import { useCartStore } from "@/store/cart-store";
+import { useWishlistStore } from "@/store/wishlist-store";
 import type { Product } from "@/types/product";
 
 interface ProductInfoProps {
@@ -16,6 +17,10 @@ interface ProductInfoProps {
 export function ProductInfo({ product }: ProductInfoProps) {
   const router = useRouter();
   const addItem = useCartStore((state) => state.addItem);
+  const toggleWishlist = useWishlistStore((state) => state.toggleItem);
+  const isWishlisted = useWishlistStore((state) =>
+    state.items.some((item) => item.id === product.id)
+  );
   const [quantity, setQuantity] = useState(1);
 
   const handleDecrease = () => {
@@ -34,6 +39,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const handleBuyNow = () => {
     addItem(product, quantity);
     router.push("/checkout");
+  };
+
+  const handleWishlistToggle = () => {
+    toggleWishlist(product);
+    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
   };
 
   return (
@@ -113,10 +123,16 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
         <button
           type="button"
-          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 transition-colors hover:text-[#9a763d]"
+          onClick={handleWishlistToggle}
+          className={`inline-flex items-center gap-2 text-sm font-medium transition-colors ${
+            isWishlisted ? "text-[#9a763d]" : "text-zinc-600"
+          } hover:text-[#9a763d]`}
         >
-          <Heart className="h-4 w-4" aria-hidden="true" />
-          Add to Wishlist
+          <Heart
+            className={`h-4 w-4 ${isWishlisted ? "fill-current" : ""}`}
+            aria-hidden="true"
+          />
+          {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
         </button>
       </div>
     </div>
