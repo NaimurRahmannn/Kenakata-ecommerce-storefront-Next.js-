@@ -35,9 +35,11 @@ interface ProductsPageProps {
   searchParams?:
     | {
         page?: string | string[];
+        q?: string | string[];
       }
     | Promise<{
         page?: string | string[];
+        q?: string | string[];
       }>;
 }
 
@@ -46,10 +48,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const pageParam = Array.isArray(resolvedSearchParams?.page)
     ? resolvedSearchParams?.page[0]
     : resolvedSearchParams?.page;
+  const queryParam = Array.isArray(resolvedSearchParams?.q)
+    ? resolvedSearchParams?.q[0]
+    : resolvedSearchParams?.q;
   const parsedPage = Number.parseInt(pageParam ?? "1", 10);
   const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
+  const searchTerm = queryParam?.trim() ?? "";
+  const normalizedSearch = searchTerm.toLowerCase();
   let totalProducts: Product[] = [];
-  let products: Product[] = [];
 
   try {
     totalProducts = await getProducts(TOTAL_PRODUCTS, { cache: "no-store" });
@@ -57,18 +63,39 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     totalProducts = [];
   }
 
-  const totalPages = Math.max(1, Math.ceil(TOTAL_PRODUCTS / ITEMS_PER_PAGE));
+  const filteredProducts = normalizedSearch
+    ? totalProducts.filter((product) => {
+        const searchableText = [
+          product.title,
+          product.description,
+          product.category?.name,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return searchableText.includes(normalizedSearch);
+      })
+    : totalProducts;
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+  );
   const currentPage = Math.min(Math.max(safePage, 1), totalPages);
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const products = filteredProducts.slice(offset, offset + ITEMS_PER_PAGE);
+  const searchQuery = searchTerm.length > 0 ? searchTerm : undefined;
+  const buildPageHref = (pageNumber: number) => {
+    const params = new URLSearchParams();
 
-  try {
-    products = await getProducts(
-      { limit: ITEMS_PER_PAGE, offset },
-      { cache: "no-store" }
-    );
-  } catch {
-    products = totalProducts.slice(offset, offset + ITEMS_PER_PAGE);
-  }
+    if (searchQuery) {
+      params.set("q", searchQuery);
+    }
+
+    params.set("page", String(pageNumber));
+    return `/products?${params.toString()}`;
+  };
 
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
@@ -166,10 +193,24 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
           <div>
             <div className="grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-center">
-              <div className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-400 shadow-sm">
+              <form
+                action="/products"
+                method="get"
+                className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm"
+              >
                 <Search className="h-5 w-5 text-zinc-950" />
-                Search products...
-              </div>
+                <input
+                  type="search"
+                  name="q"
+                  defaultValue={searchTerm}
+                  placeholder="Search products..."
+                  aria-label="Search products"
+                  className="w-full bg-transparent text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none"
+                />
+                <button type="submit" className="sr-only">
+                  Search
+                </button>
+              </form>
               <div className="flex min-w-44 items-center justify-between gap-6 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm">
                 <span>
                   Sort by: <span className="font-medium text-zinc-950">Newest</span>
@@ -194,7 +235,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 aria-label="Pagination"
               >
                 <Link
-                  href={`/products?page=${Math.max(currentPage - 1, 1)}`}
+                  href={buildPageHref(Math.max(currentPage - 1, 1))}
                   aria-disabled={currentPage === 1}
                   className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
                     currentPage === 1
@@ -208,7 +249,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 {pageNumbers.map((pageNumber) => (
                   <Link
                     key={pageNumber}
-                    href={`/products?page=${pageNumber}`}
+                    href={buildPageHref(pageNumber)}
                     aria-current={pageNumber === currentPage ? "page" : undefined}
                     className={`h-9 min-w-9 rounded-full border text-center text-sm font-medium leading-9 transition-colors ${
                       pageNumber === currentPage
@@ -221,7 +262,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 ))}
 
                 <Link
-                  href={`/products?page=${Math.min(currentPage + 1, totalPages)}`}
+                  href={buildPageHref(Math.min(currentPage + 1, totalPages))}
                   aria-disabled={currentPage === totalPages}
                   className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
                     currentPage === totalPages
