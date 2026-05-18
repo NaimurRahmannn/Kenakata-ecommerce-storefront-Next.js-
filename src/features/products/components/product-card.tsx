@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Star } from "lucide-react";
+import { toast } from "sonner";
 
 import { formatCurrency, safeImage } from "@/lib/utils";
+import { useWishlistStore } from "@/store/wishlist-store";
 import type { Product } from "@/types/product";
 
 interface ProductCardProps {
@@ -15,6 +19,19 @@ function getReviewCount(productId: number) {
 
 export function ProductCard({ product }: ProductCardProps) {
   const productHref = `/products/${product.id}`;
+  const toggleWishlist = useWishlistStore((state) => state.toggleItem);
+  const isWishlisted = useWishlistStore((state) =>
+    state.items.some((item) => item.id === product.id)
+  );
+
+  const handleWishlistToggle = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleWishlist(product);
+    toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+  };
 
   return (
     <article className="group overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c3a06a] hover:shadow-lg hover:shadow-zinc-900/10">
@@ -32,10 +49,22 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <button
           type="button"
-          aria-label={`Add ${product.title} to wishlist`}
-          className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-zinc-600 transition-colors hover:bg-white/80 hover:text-[#9a763d]"
+          aria-label={`${
+            isWishlisted ? "Remove" : "Add"
+          } ${product.title} ${isWishlisted ? "from" : "to"} wishlist`}
+          aria-pressed={isWishlisted}
+          onClick={handleWishlistToggle}
+          className={`absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/80 hover:text-[#9a763d] ${
+            isWishlisted ? "text-[#9a763d]" : "text-zinc-600"
+          }`}
         >
-          <Heart className="h-5 w-5" aria-hidden="true" />
+          <Heart
+            className={`h-5 w-5 ${isWishlisted ? "fill-current" : ""}`}
+            aria-hidden="true"
+          />
+          <span className="sr-only">
+            {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
+          </span>
         </button>
       </div>
 
