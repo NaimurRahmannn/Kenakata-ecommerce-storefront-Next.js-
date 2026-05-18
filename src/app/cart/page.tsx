@@ -1,32 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Trash2, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
-
-const cartItems = [
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    description: "Noise cancelling over-ear",
-    price: "$179.99",
-    total: "$179.99",
-  },
-  {
-    id: 2,
-    name: "Classic Watch",
-    description: "Gold plated case",
-    price: "$129.99",
-    total: "$129.99",
-  },
-  {
-    id: 3,
-    name: "Leather Handbag",
-    description: "Italian leather finish",
-    price: "$169.99",
-    total: "$169.99",
-  },
-];
+import { CartItemsTable } from "@/features/cart/components/cart-items-table";
 
 const paymentBadges = [
   "Visa",
@@ -83,88 +59,7 @@ export default function CartPage() {
         </section>
 
         <section className="mt-8 grid gap-6 lg:grid-cols-[1.65fr_1fr]">
-          <div className="rounded-xl border border-[#e8dfd3] bg-white shadow-sm">
-            <div className="hidden grid-cols-[2.2fr_0.9fr_1fr_0.8fr_0.4fr] gap-4 border-b border-[#eee5d8] px-6 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500 lg:grid">
-              <span>Product</span>
-              <span>Price</span>
-              <span>Quantity</span>
-              <span>Total</span>
-              <span>Remove</span>
-            </div>
-
-            <div className="divide-y divide-[#eee5d8]">
-              {cartItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="grid gap-4 px-6 py-5 lg:grid-cols-[2.2fr_0.9fr_1fr_0.8fr_0.4fr] lg:items-center"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="relative h-20 w-20 overflow-hidden rounded-lg border border-[#e8dfd3] bg-[#faf7f1]">
-                      <Image
-                        src="/images/hero-img.png"
-                        alt=""
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                        unoptimized
-                      />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-zinc-950">
-                        {item.name}
-                      </p>
-                      <p className="mt-1 text-xs text-zinc-600">
-                        {item.description}
-                      </p>
-                      <div className="mt-2 flex items-center gap-2 text-xs text-zinc-600">
-                        <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                        In Stock
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-sm font-semibold text-zinc-950">
-                    {item.price}
-                  </p>
-                  <div className="flex items-center rounded-lg border border-[#e8dfd3] bg-[#fffdf8]">
-                    <button
-                      type="button"
-                      className="px-3 py-2 text-zinc-500"
-                      aria-label="Decrease quantity"
-                    >
-                      -
-                    </button>
-                    <span className="px-4 text-sm font-semibold">1</span>
-                    <button
-                      type="button"
-                      className="px-3 py-2 text-zinc-500"
-                      aria-label="Increase quantity"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <p className="text-sm font-semibold text-zinc-950">
-                    {item.total}
-                  </p>
-                  <button
-                    type="button"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#eadfce] text-zinc-500 transition-colors hover:border-[#c3a06a] hover:text-[#9a763d]"
-                    aria-label="Remove item"
-                  >
-                    <Trash2 className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#eee5d8] px-6 py-4">
-              <Link
-                href="/products"
-                className="text-sm font-semibold text-zinc-950 underline decoration-[#c3a06a] decoration-2 underline-offset-8 transition-colors hover:text-[#9a763d]"
-              >
-                Continue Shopping
-              </Link>
-            </div>
-          </div>
+          <CartItemsTable />
 
           <aside className="h-fit rounded-xl border border-[#e8dfd3] bg-white p-6 shadow-sm">
             <h2 className="text-xl font-semibold text-zinc-950">Order Summary</h2>
