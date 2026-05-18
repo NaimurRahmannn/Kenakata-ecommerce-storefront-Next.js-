@@ -7,6 +7,8 @@ import { ProductGrid } from "@/features/products/components/product-grid";
 import { getProducts } from "@/lib/api";
 import type { Product } from "@/types/product";
 
+const ITEMS_PER_PAGE = 12;
+
 const filterSections = [
   {
     title: "Categories",
@@ -26,7 +28,13 @@ const filterSections = [
   },
 ];
 
-export default async function ProductsPage() {
+interface ProductsPageProps {
+  searchParams?: {
+    page?: string | string[];
+  };
+}
+
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   let products: Product[] = [];
 
   try {
@@ -34,6 +42,20 @@ export default async function ProductsPage() {
   } catch {
     products = [];
   }
+
+  const pageParam = Array.isArray(searchParams?.page)
+    ? searchParams?.page[0]
+    : searchParams?.page;
+  const parsedPage = Number.parseInt(pageParam ?? "1", 10);
+  const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
+  const totalPages = Math.max(1, Math.ceil(products.length / ITEMS_PER_PAGE));
+  const currentPage = Math.min(Math.max(safePage, 1), totalPages);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedProducts = products.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
     <div className="bg-[#fffdf8] text-zinc-950">
@@ -141,15 +163,61 @@ export default async function ProductsPage() {
               </div>
               <div className="flex min-w-36 items-center justify-between gap-6 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm">
                 <span>
-                  Show: <span className="font-medium text-zinc-950">12</span>
+                  Show: <span className="font-medium text-zinc-950">16</span>
                 </span>
                 <ChevronDown className="h-4 w-4 text-zinc-500" />
               </div>
             </div>
 
             <div className="mt-5">
-              <ProductGrid products={products} />
+              <ProductGrid products={paginatedProducts} />
             </div>
+
+            {totalPages > 1 && (
+              <nav
+                className="mt-8 flex flex-wrap items-center justify-center gap-2"
+                aria-label="Pagination"
+              >
+                <Link
+                  href={`/products?page=${Math.max(currentPage - 1, 1)}`}
+                  aria-disabled={currentPage === 1}
+                  className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                    currentPage === 1
+                      ? "cursor-not-allowed border-[#e8dfd3] text-zinc-300"
+                      : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d]"
+                  }`}
+                >
+                  Previous
+                </Link>
+
+                {pageNumbers.map((pageNumber) => (
+                  <Link
+                    key={pageNumber}
+                    href={`/products?page=${pageNumber}`}
+                    aria-current={pageNumber === currentPage ? "page" : undefined}
+                    className={`h-9 min-w-9 rounded-full border text-center text-sm font-medium leading-9 transition-colors ${
+                      pageNumber === currentPage
+                        ? "border-[#c3a06a] bg-[#f3eadc] text-[#9a763d]"
+                        : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d]"
+                    }`}
+                  >
+                    {pageNumber}
+                  </Link>
+                ))}
+
+                <Link
+                  href={`/products?page=${Math.min(currentPage + 1, totalPages)}`}
+                  aria-disabled={currentPage === totalPages}
+                  className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                    currentPage === totalPages
+                      ? "cursor-not-allowed border-[#e8dfd3] text-zinc-300"
+                      : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d]"
+                  }`}
+                >
+                  Next
+                </Link>
+              </nav>
+            )}
           </div>
         </section>
       </Container>
