@@ -14,6 +14,7 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Container } from "@/components/shared/container";
+import { useCartStore } from "@/store/cart-store";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -28,6 +29,11 @@ export function Header() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isShopPage = pathname?.startsWith("/products");
+  const cartItems = useCartStore((state) => state.items);
+  const cartCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   const openFilters = () => {
     if (!pathname) {
@@ -100,12 +106,12 @@ export function Header() {
               </button>
               <Link
                 href="/cart"
-                aria-label="View cart"
+                aria-label={`View cart (${cartCount} items)`}
                 className="relative rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]"
               >
                 <ShoppingCart className="h-5 w-5" aria-hidden="true" />
                 <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#b88a39] px-1 text-[10px] font-semibold leading-none text-white">
-                  0
+                  {cartCount}
                 </span>
               </Link>
               <Link
