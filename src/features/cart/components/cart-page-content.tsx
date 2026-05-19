@@ -6,16 +6,27 @@ import Link from "next/link";
 import { Truck } from "lucide-react";
 
 import { paymentMethods } from "@/constants/payment-methods";
+import { ProductCard } from "@/features/products/components/product-card";
 import { formatCurrency } from "@/lib/utils";
 import { useHydrated } from "@/lib/use-hydrated";
 import { useCartStore } from "@/store/cart-store";
+import type { Product } from "@/types/product";
 import { CartItemsTable } from "./cart-items-table";
 
 const FREE_SHIPPING_THRESHOLD = 99;
 const TAX_RATE = 0.08;
 const STANDARD_SHIPPING = 9.99;
+const MAX_RECOMMENDATIONS = 4;
 
-export function CartPageContent() {
+interface CartPageContentProps {
+  products: Product[];
+}
+
+function normalizeCategoryName(categoryName?: string) {
+  return categoryName?.trim().toLowerCase() ?? "";
+}
+
+export function CartPageContent({ products }: CartPageContentProps) {
   const items = useCartStore((state) => state.items);
   const mounted = useHydrated();
   const [deselectedItemIds, setDeselectedItemIds] = useState<number[]>([]);
@@ -39,6 +50,38 @@ export function CartPageContent() {
     () => items.filter((item) => selectedIdSet.has(item.id)),
     [items, selectedIdSet]
   );
+  const recommendedProducts = useMemo(() => {
+    const cartItemIds = new Set(items.map((item) => item.id));
+    const recommendationBaseItems =
+      selectedItems.length > 0 ? selectedItems : items;
+    const preferredCategoryNames = new Set(
+      recommendationBaseItems
+        .map((item) => normalizeCategoryName(item.categoryName))
+        .filter(Boolean)
+    );
+    const availableProducts = products.filter(
+      (product) => !cartItemIds.has(product.id)
+    );
+
+    if (preferredCategoryNames.size === 0) {
+      return availableProducts.slice(0, MAX_RECOMMENDATIONS);
+    }
+
+    const sameCategoryProducts = availableProducts.filter((product) =>
+      preferredCategoryNames.has(normalizeCategoryName(product.category?.name))
+    );
+    const sameCategoryProductIds = new Set(
+      sameCategoryProducts.map((product) => product.id)
+    );
+    const fallbackProducts = availableProducts.filter(
+      (product) => !sameCategoryProductIds.has(product.id)
+    );
+
+    return [...sameCategoryProducts, ...fallbackProducts].slice(
+      0,
+      MAX_RECOMMENDATIONS
+    );
+  }, [items, products, selectedItems]);
 
   const selectedQuantity = selectedItems.reduce(
     (total, item) => total + item.quantity,
@@ -243,6 +286,30 @@ export function CartPageContent() {
           </div>
         </aside>
       </section>
+
+      {recommendedProducts.length > 0 && (
+        <section className="mt-12" aria-labelledby="cart-recommendations">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h2
+              id="cart-recommendations"
+              className="text-2xl font-semibold text-zinc-950"
+            >
+              You may also like
+            </h2>
+            <Link
+              href="/products"
+              className="text-sm font-semibold text-zinc-950 underline decoration-[#c3a06a] decoration-2 underline-offset-8 transition-colors hover:text-[#9a763d]"
+            >
+              View all
+            </Link>
+          </div>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {recommendedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

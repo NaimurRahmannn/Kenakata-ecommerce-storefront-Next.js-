@@ -2,8 +2,18 @@ import Link from "next/link";
 
 import { Container } from "@/components/shared/container";
 import { CartPageContent } from "@/features/cart/components/cart-page-content";
+import { getProducts } from "@/lib/api";
+import type { Product } from "@/types/product";
 
-export default function CartPage() {
+export default async function CartPage() {
+  let products: Product[] = [];
+
+  try {
+    products = await getProducts(60, { cache: "no-store" });
+  } catch {
+    products = [];
+  }
+
   return (
     <div className="bg-[#fffdf8] text-zinc-950">
       <Container className="py-8 sm:py-10 lg:py-12">
@@ -29,29 +39,7 @@ export default function CartPage() {
           </p>
         </div>
 
-        <CartPageContent />
-
-        <section className="mt-12">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <h2 className="text-2xl font-semibold text-zinc-950">
-              You may also like
-            </h2>
-            <Link
-              href="/products"
-              className="text-sm font-semibold text-zinc-950 underline decoration-[#c3a06a] decoration-2 underline-offset-8 transition-colors hover:text-[#9a763d]"
-            >
-              View all
-            </Link>
-          </div>
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-64 rounded-xl border border-[#e8dfd3] bg-white shadow-sm"
-              />
-            ))}
-          </div>
-        </section>
+        <CartPageContent products={products} />
       </Container>
     </div>
   );
