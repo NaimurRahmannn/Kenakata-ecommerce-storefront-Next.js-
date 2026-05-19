@@ -75,7 +75,15 @@ export function Footer() {
                 width={150}
                 height={90}
                 unoptimized
-                className="h-10 w-auto object-contain"
+                className="h-10 w-auto object-contain dark:hidden"
+              />
+              <Image
+                src="/images/kenakata-darklogo.png"
+                alt="KenaKata"
+                width={150}
+                height={90}
+                unoptimized
+                className="hidden h-10 w-auto object-contain dark:block"
               />
             </Link>
             <p className="mt-2 max-w-xs text-xs leading-5 text-zinc-600 dark:text-zinc-400">

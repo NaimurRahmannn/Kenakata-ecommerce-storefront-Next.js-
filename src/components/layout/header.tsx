@@ -92,7 +92,16 @@ export function Header() {
                 height={92}
                 priority
                 unoptimized
-                className="h-12 w-auto object-contain sm:h-14 lg:h-16"
+                className="h-12 w-auto object-contain sm:h-14 lg:h-16 dark:hidden"
+              />
+              <Image
+                src="/images/kenakata-darklogo.png"
+                alt="KenaKata"
+                width={154}
+                height={92}
+                priority
+                unoptimized
+                className="hidden h-12 w-auto object-contain sm:h-14 lg:h-16 dark:block"
               />
             </Link>
 
