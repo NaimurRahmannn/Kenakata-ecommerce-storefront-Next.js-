@@ -35,13 +35,13 @@ export function CheckoutOrderSummary({
 
   if (!mounted) {
     return (
-      <aside className="h-fit rounded-xl border border-neutral-200 bg-white p-6 shadow-sm lg:sticky lg:top-24">
-        <div className="h-6 w-36 rounded-md bg-[#f5efe5]" />
+      <aside className="h-fit rounded-xl border border-neutral-200 bg-white p-6 shadow-sm lg:sticky lg:top-24 dark:border-zinc-800 dark:bg-[#141310]">
+        <div className="h-6 w-36 rounded-md bg-[#f5efe5] dark:bg-[#1f1b14]" />
         <div className="mt-5 space-y-3">
           {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="h-5 w-full rounded-md bg-[#faf7f1]"
+              className="h-5 w-full rounded-md bg-[#faf7f1] dark:bg-[#1a1916]"
             />
           ))}
         </div>
@@ -59,8 +59,8 @@ export function CheckoutOrderSummary({
   const total = subtotal + tax + effectiveShipping;
 
   return (
-    <aside className="h-fit rounded-xl border border-neutral-200 bg-white p-6 shadow-sm lg:sticky lg:top-24">
-      <h2 className="font-serif text-2xl font-semibold text-neutral-950">
+    <aside className="h-fit rounded-xl border border-neutral-200 bg-white p-6 shadow-sm lg:sticky lg:top-24 dark:border-zinc-800 dark:bg-[#141310]">
+      <h2 className="font-serif text-2xl font-semibold text-neutral-950 dark:text-zinc-100">
         Order Summary
       </h2>
 
@@ -68,7 +68,7 @@ export function CheckoutOrderSummary({
         <div className="mt-5 space-y-4">
           {items.map((item) => (
             <div key={item.id} className="flex items-center gap-4">
-              <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-neutral-100">
+              <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-neutral-100 dark:bg-[#1a1916]">
                 <Image
                   src={safeImage(item.image)}
                   alt={item.title}
@@ -79,44 +79,44 @@ export function CheckoutOrderSummary({
               </div>
 
               <div className="flex-1">
-                <h3 className="font-serif text-base font-semibold text-neutral-950">
+                <h3 className="font-serif text-base font-semibold text-neutral-950 dark:text-zinc-100">
                   {item.title}
                 </h3>
-                <p className="mt-1 text-sm text-neutral-500">
+                <p className="mt-1 text-sm text-neutral-500 dark:text-zinc-400">
                   Qty: {item.quantity}
                 </p>
               </div>
 
-              <p className="font-semibold text-neutral-950">
+              <p className="font-semibold text-neutral-950 dark:text-zinc-100">
                 {formatCurrency(item.price * item.quantity)}
               </p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="mt-5 rounded-lg border border-neutral-200 bg-[#faf7f1] p-4 text-sm text-neutral-600">
+        <div className="mt-5 rounded-lg border border-neutral-200 bg-[#faf7f1] p-4 text-sm text-neutral-600 dark:border-zinc-800 dark:bg-[#1a1916] dark:text-zinc-400">
           Your cart is empty. {" "}
-          <Link href="/products" className="font-semibold text-[#a46d1e]">
+          <Link href="/products" className="font-semibold text-[#a46d1e] dark:text-[#d6b36a]">
             Browse products
           </Link>
         </div>
       )}
 
-      <div className="mt-6 border-t border-neutral-200 pt-5">
+      <div className="mt-6 border-t border-neutral-200 pt-5 dark:border-zinc-800">
         <SummaryRow
           label={`Subtotal (${quantity} ${quantity === 1 ? "item" : "items"})`}
           value={formatCurrency(subtotal)}
         />
         <div className="mt-3">
           <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-1 text-neutral-700">
+            <span className="flex items-center gap-1 text-neutral-700 dark:text-zinc-300">
               Shipping <Info className="h-3.5 w-3.5" />
             </span>
             <span
               className={`font-semibold ${
                 effectiveShipping === 0
                   ? "text-green-700"
-                  : "text-neutral-950"
+                  : "text-neutral-950 dark:text-zinc-100"
               }`}
             >
               {shippingLabel}
@@ -126,7 +126,7 @@ export function CheckoutOrderSummary({
             className={`mt-1 text-sm ${
               effectiveShipping === 0
                 ? "text-green-700"
-                : "text-neutral-500"
+                : "text-neutral-500 dark:text-zinc-400"
             }`}
           >
             {shippingDescription}
@@ -139,12 +139,16 @@ export function CheckoutOrderSummary({
         />
       </div>
 
-      <div className="mt-5 border-t border-neutral-200 pt-5">
+      <div className="mt-5 border-t border-neutral-200 pt-5 dark:border-zinc-800">
         <div className="flex items-end justify-between">
-          <span className="font-serif text-2xl font-semibold">Total</span>
+          <span className="font-serif text-2xl font-semibold dark:text-zinc-100">
+            Total
+          </span>
           <div className="text-right">
-            <span className="mr-2 text-sm text-neutral-500">USD</span>
-            <span className="text-3xl font-bold text-neutral-950">
+            <span className="mr-2 text-sm text-neutral-500 dark:text-zinc-400">
+              USD
+            </span>
+            <span className="text-3xl font-bold text-neutral-950 dark:text-zinc-100">
               {formatCurrency(total)}
             </span>
           </div>
@@ -156,8 +160,8 @@ export function CheckoutOrderSummary({
           disabled={!hasItems || isSubmitting}
           className={`mt-5 flex h-12 w-full items-center justify-center gap-3 rounded-lg text-sm font-semibold transition ${
             !hasItems || isSubmitting
-              ? "cursor-not-allowed bg-neutral-200 text-neutral-500"
-              : "bg-neutral-950 text-white hover:bg-neutral-800"
+              ? "cursor-not-allowed bg-neutral-200 text-neutral-500 dark:bg-zinc-800 dark:text-zinc-400"
+              : "bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-[#f4eddf] dark:text-zinc-950 dark:hover:bg-[#e7dccb]"
           }`}
         >
           <Lock className="h-4 w-4" />
@@ -165,16 +169,16 @@ export function CheckoutOrderSummary({
         </button>
 
         <div className="mt-4 text-center">
-          <div className="flex items-center justify-center gap-2 text-sm font-medium text-neutral-800">
+          <div className="flex items-center justify-center gap-2 text-sm font-medium text-neutral-800 dark:text-zinc-100">
             <ShieldCheck className="h-4 w-4" />
             Secure Checkout
           </div>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-neutral-500 dark:text-zinc-400">
             Your information is encrypted and safe.
           </p>
         </div>
 
-        <div className="mt-5 grid grid-cols-3 rounded-lg border border-neutral-200 py-4 text-center">
+        <div className="mt-5 grid grid-cols-3 rounded-lg border border-neutral-200 py-4 text-center dark:border-zinc-800">
           <MiniFeature
             icon={<RefreshCcw className="h-5 w-5" />}
             title="Free Returns"
@@ -193,12 +197,12 @@ export function CheckoutOrderSummary({
         </div>
 
         <div className="mt-5">
-          <p className="text-sm text-neutral-600">We accept</p>
+          <p className="text-sm text-neutral-600 dark:text-zinc-400">We accept</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {paymentMethods.map((method) => (
               <span
                 key={method.label}
-                className="inline-flex h-8 min-w-12 items-center justify-center rounded border border-neutral-200 bg-white px-2 shadow-sm"
+                className="inline-flex h-8 min-w-12 items-center justify-center rounded border border-neutral-200 bg-white px-2 shadow-sm dark:border-zinc-800 dark:bg-[#141310]"
               >
                 <Image
                   src={method.src}
@@ -228,11 +232,13 @@ function SummaryRow({
 }) {
   return (
     <div className="mt-3 flex items-center justify-between text-sm">
-      <span className="flex items-center gap-1 text-neutral-700">
+      <span className="flex items-center gap-1 text-neutral-700 dark:text-zinc-300">
         {label}
         {info && <Info className="h-3.5 w-3.5" />}
       </span>
-      <span className="font-semibold text-neutral-950">{value}</span>
+      <span className="font-semibold text-neutral-950 dark:text-zinc-100">
+        {value}
+      </span>
     </div>
   );
 }
@@ -247,12 +253,16 @@ function MiniFeature({
   text: string;
 }) {
   return (
-    <div className="border-r border-neutral-200 px-2 last:border-r-0">
-      <div className="mx-auto flex justify-center text-[#c17a1c]">
+    <div className="border-r border-neutral-200 px-2 last:border-r-0 dark:border-zinc-800">
+      <div className="mx-auto flex justify-center text-[#c17a1c] dark:text-[#d6b36a]">
         {icon}
       </div>
-      <h4 className="mt-2 text-xs font-semibold text-neutral-950">{title}</h4>
-      <p className="mt-1 text-[11px] text-neutral-500">{text}</p>
+      <h4 className="mt-2 text-xs font-semibold text-neutral-950 dark:text-zinc-100">
+        {title}
+      </h4>
+      <p className="mt-1 text-[11px] text-neutral-500 dark:text-zinc-400">
+        {text}
+      </p>
     </div>
   );
 }

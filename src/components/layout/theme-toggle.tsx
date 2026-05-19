@@ -13,16 +13,7 @@ export function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return (
-      <button
-        type="button"
-        aria-label="Toggle theme"
-        className="rounded-full p-2 text-zinc-400"
-        disabled
-      >
-        <span className="block h-5 w-5" aria-hidden="true" />
-      </button>
-    );
+    return null;
   }
 
   const isDark = theme === "dark";

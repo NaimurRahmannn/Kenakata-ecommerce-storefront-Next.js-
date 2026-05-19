@@ -368,10 +368,10 @@ export function CheckoutContent() {
             </div>
           </div>
 
-          <label className="mt-4 flex items-center gap-3 text-sm text-neutral-700">
+          <label className="mt-4 flex items-center gap-3 text-sm text-neutral-700 dark:text-zinc-300">
             <input
               type="checkbox"
-              className="h-4 w-4 accent-neutral-950"
+              className="h-4 w-4 accent-neutral-950 dark:accent-[#d6b36a]"
               {...register("useBillingAsShipping")}
             />
             Use billing address as shipping address
@@ -450,7 +450,7 @@ export function CheckoutContent() {
               error={errors.cardNumber?.message}
               inputClassName="pr-12"
               suffix={
-                <span className="absolute bottom-3 right-4 text-xs font-bold text-blue-700">
+                <span className="absolute bottom-3 right-4 text-xs font-bold text-blue-700 dark:text-[#d6b36a]">
                   VISA
                 </span>
               }
@@ -479,7 +479,7 @@ export function CheckoutContent() {
               error={errors.securityCode?.message}
               inputClassName="pr-10"
               suffix={
-                <Info className="absolute bottom-3 right-4 h-4 w-4 text-neutral-500" />
+                <Info className="absolute bottom-3 right-4 h-4 w-4 text-neutral-500 dark:text-zinc-400" />
               }
             />
             <InputField
@@ -495,15 +495,15 @@ export function CheckoutContent() {
           </div>
 
           {!isCardPayment ? (
-            <p className="mt-3 text-sm text-neutral-500">
+            <p className="mt-3 text-sm text-neutral-500 dark:text-zinc-400">
               You will be redirected to complete this payment method.
             </p>
           ) : null}
 
-          <label className="mt-4 flex items-center gap-3 text-sm text-neutral-700">
+          <label className="mt-4 flex items-center gap-3 text-sm text-neutral-700 dark:text-zinc-300">
             <input
               type="checkbox"
-              className="h-4 w-4 accent-neutral-950"
+              className="h-4 w-4 accent-neutral-950 dark:accent-[#d6b36a]"
               {...register("savePaymentInfo")}
             />
             Save my payment information for a faster checkout
@@ -529,14 +529,14 @@ type CheckoutCardProps = {
 
 function CheckoutCard({ icon, title, children }: CheckoutCardProps) {
   return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+    <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-[#141310]">
       <div className="grid gap-5 md:grid-cols-[48px_1fr]">
-        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#f7eee6] text-[#c17a1c]">
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#f7eee6] text-[#c17a1c] dark:bg-[#1f1b14] dark:text-[#d6b36a]">
           {icon}
         </div>
 
         <div>
-          <h2 className="font-serif text-xl font-semibold text-neutral-950">
+          <h2 className="font-serif text-xl font-semibold text-neutral-950 dark:text-zinc-100">
             {title}
           </h2>
           <div className="mt-4">{children}</div>
@@ -581,7 +581,7 @@ function InputField({
   return (
     <label className="block">
       {label ? (
-        <span className="mb-1 block text-xs font-medium text-neutral-500">
+        <span className="mb-1 block text-xs font-medium text-neutral-500 dark:text-zinc-400">
           {label} {required && <span className="text-red-500">*</span>}
         </span>
       ) : null}
@@ -595,9 +595,9 @@ function InputField({
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : undefined}
           disabled={disabled}
-          className={`h-11 w-full rounded-lg border bg-white px-4 text-sm text-neutral-950 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 ${
+          className={`h-11 w-full rounded-lg border bg-white px-4 text-sm text-neutral-950 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 dark:border-zinc-700 dark:bg-[#151310] dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-[#d6b36a] ${
             error ? "border-rose-500 focus:border-rose-500" : "border-neutral-300"
-          } ${disabled ? "bg-neutral-100 text-neutral-400" : ""} ${
+          } ${disabled ? "bg-neutral-100 text-neutral-400 dark:bg-[#1a1916] dark:text-zinc-500" : ""} ${
             inputClassName ?? ""
           }`}
           {...register(id)}
@@ -621,7 +621,7 @@ function SelectField(props: SelectFieldProps) {
       {...props}
       inputClassName="pr-10"
       suffix={
-        <ChevronDown className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+        <ChevronDown className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 dark:text-zinc-400" />
       }
     />
   );
@@ -649,22 +649,28 @@ function DeliveryOption({
       aria-pressed={active}
       className={`flex w-full items-center gap-3 rounded-lg border px-3 py-2.5 text-sm transition ${
         active
-          ? "border-[#c98a24] bg-[#fffaf4]"
-          : "border-neutral-200 hover:border-neutral-400"
+          ? "border-[#c98a24] bg-[#fffaf4] dark:border-[#d6b36a] dark:bg-[#201b14]"
+          : "border-neutral-200 hover:border-neutral-400 dark:border-zinc-800 dark:bg-[#141310] dark:hover:border-[#d6b36a]"
       }`}
     >
       <span
         className={`h-4 w-4 rounded-full border ${
           active
-            ? "border-[#c98a24] bg-[#c98a24] ring-2 ring-white"
-            : "border-neutral-300"
+            ? "border-[#c98a24] bg-[#c98a24] ring-2 ring-white dark:border-[#d6b36a] dark:bg-[#d6b36a] dark:ring-[#141310]"
+            : "border-neutral-300 dark:border-zinc-700"
         }`}
       />
-      <span className="font-medium text-neutral-950">{title}</span>
-      <span className="ml-auto text-neutral-500 md:ml-20">{time}</span>
+      <span className="font-medium text-neutral-950 dark:text-zinc-100">
+        {title}
+      </span>
+      <span className="ml-auto text-neutral-500 md:ml-20 dark:text-zinc-400">
+        {time}
+      </span>
       <span
         className={`ml-auto font-semibold ${
-          price === "FREE" ? "text-green-700" : "text-neutral-950"
+          price === "FREE"
+            ? "text-green-700"
+            : "text-neutral-950 dark:text-zinc-100"
         }`}
       >
         {price}
@@ -694,8 +700,8 @@ function PaymentTab({
       onClick={onSelect}
       className={`flex h-10 items-center justify-center gap-2 rounded-lg border text-sm font-medium transition ${
         active
-          ? "border-[#c98a24] bg-white text-neutral-950"
-          : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400"
+          ? "border-[#c98a24] bg-white text-neutral-950 dark:border-[#d6b36a] dark:bg-[#201b14] dark:text-zinc-100"
+          : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400 dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-400 dark:hover:border-[#d6b36a]"
       }`}
     >
       {icon}
