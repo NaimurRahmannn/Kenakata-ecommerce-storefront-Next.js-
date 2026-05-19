@@ -34,7 +34,7 @@ export function LoginForm() {
 
       setAuth(tokens, user);
       toast.success("Welcome back!");
-      router.push("/");
+      router.push("/");   // Redirect to home after login
     } catch (error) {
       const message =
         error instanceof Error

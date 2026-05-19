@@ -4,16 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Heart,
-  Search,
   ShoppingCart,
   SlidersHorizontal,
   Truck,
-  UserRound,
   X,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Container } from "@/components/shared/container";
+import { UserMenu } from "@/components/layout/user-menu";
 import { useCartStore } from "@/store/cart-store";
 import { useWishlistStore } from "@/store/wishlist-store";
 
@@ -109,13 +108,7 @@ export function Header() {
                   {cartCount}
                 </span>
               </Link>
-              <Link
-                href="/login"
-                aria-label="Login"
-                className="rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]"
-              >
-                <UserRound className="h-5 w-5" aria-hidden="true" />
-              </Link>
+              <UserMenu />
               {isShopPage && (
                 <button
                   type="button"
