@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { EyeOff, Lock, Mail } from "lucide-react";
 import Image from "next/image";
+
+import { LoginForm } from "@/features/auth/components/login-form";
 export default function LoginPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f7f1e9]">
@@ -42,74 +43,7 @@ export default function LoginPage() {
               </p>
             </div>
 
-            <form className="mt-6 space-y-4">
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-neutral-900"
-                >
-                  Email Address
-                </label>
-
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
-
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white pl-10 pr-4 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900"
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="mb-2 block text-sm font-medium text-neutral-900"
-                >
-                  Password
-                </label>
-
-                <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
-
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white pl-10 pr-11 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900"
-                  />
-
-                  <button
-                    type="button"
-                    aria-label="Show password"
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 transition hover:text-neutral-900"
-                  >
-                    <EyeOff className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="mt-2 text-right">
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs font-medium text-[#a46d1e] transition hover:text-neutral-950"
-                  >
-                    Forgot Password?
-                  </Link>
-                </div>
-              </div>
-
-              {/* Login Button */}
-              <button
-                type="submit"
-                className="h-11 w-full rounded-lg bg-neutral-950 text-sm font-semibold text-white transition hover:bg-neutral-800"
-              >
-                Login
-              </button>
-            </form>
+            <LoginForm />
 
             {/* Divider */}
             <div className="my-5 flex items-center gap-4">
@@ -165,10 +99,3 @@ export default function LoginPage() {
     </main>
   );
 }
-
-type BenefitItemProps = {
-  icon: string;
-  title: string;
-  description: string;
-  noBorder?: boolean;
-};
