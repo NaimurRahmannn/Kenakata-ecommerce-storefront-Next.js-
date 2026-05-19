@@ -6,7 +6,7 @@ import { AuthStateSync } from "@/components/auth/auth-state-sync";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-
+import { Suspense } from "react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -44,20 +44,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-screen bg-transparent text-zinc-950 dark:text-zinc-100">
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>
           <AuthStateSync />
-          <Toaster richColors position="top-right" />
-          <div className="flex min-h-screen flex-col">
+
+          <Suspense fallback={null}>
             <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          </Suspense>
+
+          {children}
+
+          <Footer />
+          <Toaster richColors position="top-center" />
         </ThemeProvider>
       </body>
     </html>

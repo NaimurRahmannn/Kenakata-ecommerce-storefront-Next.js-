@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
@@ -38,40 +39,53 @@ interface ProductsPageProps {
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const resolvedSearchParams = await Promise.resolve(searchParams);
+
   const pageParam = Array.isArray(resolvedSearchParams?.page)
     ? resolvedSearchParams?.page[0]
     : resolvedSearchParams?.page;
+
   const queryParam = Array.isArray(resolvedSearchParams?.q)
     ? resolvedSearchParams?.q[0]
     : resolvedSearchParams?.q;
+
   const sortParam = Array.isArray(resolvedSearchParams?.sort)
     ? resolvedSearchParams?.sort[0]
     : resolvedSearchParams?.sort;
+
   const minParam = Array.isArray(resolvedSearchParams?.min)
     ? resolvedSearchParams?.min[0]
     : resolvedSearchParams?.min;
+
   const maxParam = Array.isArray(resolvedSearchParams?.max)
     ? resolvedSearchParams?.max[0]
     : resolvedSearchParams?.max;
+
   const categoryParam = Array.isArray(resolvedSearchParams?.category)
     ? resolvedSearchParams?.category[0]
     : resolvedSearchParams?.category;
+
   const parsedPage = Number.parseInt(pageParam ?? "1", 10);
   const safePage = Number.isNaN(parsedPage) ? 1 : parsedPage;
+
   const searchTerm = queryParam?.trim() ?? "";
   const normalizedSearch = searchTerm.toLowerCase();
+
   const parsedMinPrice = Number.parseFloat(minParam ?? "");
   const parsedMaxPrice = Number.parseFloat(maxParam ?? "");
+
   const selectedCategory = categoryParam?.trim() ?? "";
   const normalizedCategory = selectedCategory.toLowerCase();
+
   const sortValue =
     sortParam === "price-asc" || sortParam === "price-desc"
       ? sortParam
       : "newest";
+
   let totalProducts: Product[] = [];
   let categories: Category[] = [];
 
-  const categorySlug = normalizedCategory.length > 0 ? normalizedCategory : undefined;
+  const categorySlug =
+    normalizedCategory.length > 0 ? normalizedCategory : undefined;
 
   try {
     totalProducts = await getProducts(
@@ -107,24 +121,31 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const priceValues = totalProducts
     .map((product) => product.price)
     .filter((price) => Number.isFinite(price));
+
   const minPrice = priceValues.length > 0 ? Math.min(...priceValues) : 0;
   const maxPrice = priceValues.length > 0 ? Math.max(...priceValues) : 0;
+
   const safeMinPrice = Number.isNaN(parsedMinPrice)
     ? minPrice
     : parsedMinPrice;
+
   const safeMaxPrice = Number.isNaN(parsedMaxPrice)
     ? maxPrice
     : parsedMaxPrice;
+
   const clampedMinPrice = Math.min(
     Math.max(safeMinPrice, minPrice),
     maxPrice
   );
+
   const clampedMaxPrice = Math.min(
     Math.max(safeMaxPrice, minPrice),
     maxPrice
   );
+
   const rangeMin = Math.min(clampedMinPrice, clampedMaxPrice);
   const rangeMax = Math.max(clampedMinPrice, clampedMaxPrice);
+
   const hasPriceFilter = rangeMin > minPrice || rangeMax < maxPrice;
 
   const filteredProducts = normalizedSearch
@@ -157,12 +178,16 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     1,
     Math.ceil(sortedProducts.length / ITEMS_PER_PAGE)
   );
+
   const currentPage = Math.min(Math.max(safePage, 1), totalPages);
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const products = sortedProducts.slice(offset, offset + ITEMS_PER_PAGE);
+
   const searchQuery = searchTerm.length > 0 ? searchTerm : undefined;
-  const categoryQuery = selectedCategory.length > 0 ? selectedCategory : undefined;
+  const categoryQuery =
+    selectedCategory.length > 0 ? selectedCategory : undefined;
   const sortQuery = sortValue !== "newest" ? sortValue : undefined;
+
   const buildBaseParams = () => {
     const params = new URLSearchParams();
 
@@ -190,6 +215,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }
 
     params.set("page", "1");
+
     return `/products?${params.toString()}`;
   };
 
@@ -201,10 +227,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }
 
     params.set("page", String(pageNumber));
+
     return `/products?${params.toString()}`;
   };
 
-  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
+
   const filtersPanel = (
     <FiltersPanel
       categories={categories}
@@ -229,16 +260,25 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           >
             Shop
           </h1>
-          <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
+
+          <nav
+            className="flex items-center gap-2 text-sm"
+            aria-label="Breadcrumb"
+          >
             <Link
               href="/"
               className="text-zinc-500 transition-colors hover:text-[#9a763d] dark:text-zinc-400 dark:hover:text-[#d6b36a]"
             >
               Home
             </Link>
-            <span className="text-[#9a763d] dark:text-[#d6b36a]" aria-hidden="true">
+
+            <span
+              className="text-[#9a763d] dark:text-[#d6b36a]"
+              aria-hidden="true"
+            >
               &gt;
             </span>
+
             <span className="font-medium text-[#9a763d] dark:text-[#d6b36a]">
               Shop
             </span>
@@ -254,6 +294,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             sizes="100vw"
             className="absolute inset-0 object-cover object-[78%_center]"
           />
+
           <div className="absolute inset-0 bg-linear-to-r from-[#faf7f1] via-[#faf7f1]/92 to-[#faf7f1]/8 dark:from-[#11100e] dark:via-[#11100e]/90 dark:to-[#11100e]/15" />
 
           <div className="relative flex min-h-44 items-center p-6 sm:p-8 lg:min-h-46 lg:p-9">
@@ -261,9 +302,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <p className="text-sm font-medium text-zinc-950 dark:text-zinc-100">
                 Discover our premium collection
               </p>
+
               <h2 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-100">
                 Quality. Style. Value.
               </h2>
+
               <p className="mt-3 text-base leading-7 text-zinc-600 dark:text-zinc-300">
                 Handpicked products, just for you.
               </p>
@@ -281,8 +324,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 <SlidersHorizontal className="h-4 w-4 text-[#9a763d]" />
                 Filters
               </h2>
-             
             </div>
+
             {filtersPanel}
           </aside>
 
@@ -296,16 +339,20 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 {sortQuery && (
                   <input type="hidden" name="sort" value={sortQuery} />
                 )}
+
                 {categoryQuery && (
                   <input type="hidden" name="category" value={categoryQuery} />
                 )}
+
                 {hasPriceFilter && (
                   <>
                     <input type="hidden" name="min" value={rangeMin} />
                     <input type="hidden" name="max" value={rangeMax} />
                   </>
                 )}
+
                 <Search className="h-5 w-5 text-zinc-950 dark:text-zinc-100" />
+
                 <input
                   type="search"
                   name="q"
@@ -314,15 +361,22 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   aria-label="Search products"
                   className="w-full bg-transparent text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
                 />
+
                 <button type="submit" className="sr-only">
                   Search
                 </button>
               </form>
-              <SortSelect currentSort={sortValue} />
+
+              <Suspense fallback={null}>
+                <SortSelect currentSort={sortValue} />
+              </Suspense>
             </div>
-            <FiltersDrawer showTrigger={false} openParam="filters">
-              {filtersPanel}
-            </FiltersDrawer>
+
+            <Suspense fallback={null}>
+              <FiltersDrawer showTrigger={false} openParam="filters">
+                {filtersPanel}
+              </FiltersDrawer>
+            </Suspense>
 
             <div className="mt-5">
               <ProductGrid products={products} />
@@ -349,7 +403,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   <Link
                     key={pageNumber}
                     href={buildPageHref(pageNumber)}
-                    aria-current={pageNumber === currentPage ? "page" : undefined}
+                    aria-current={
+                      pageNumber === currentPage ? "page" : undefined
+                    }
                     className={`h-9 min-w-9 rounded-full border text-center text-sm font-medium leading-9 transition-colors ${
                       pageNumber === currentPage
                         ? "border-[#c3a06a] bg-[#f3eadc] text-[#9a763d] dark:border-[#d6b36a] dark:bg-[#251f16] dark:text-[#d6b36a]"
