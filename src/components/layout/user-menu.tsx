@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  LayoutDashboard,
   LogOut,
   ShoppingBag,
   UserRound,
@@ -14,7 +13,7 @@ import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth-store";
 
 const iconButtonClasses =
-  "rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]";
+  "inline-flex h-9 w-9 items-center justify-center rounded-full text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]";
 
 const menuItemClasses =
   "flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-zinc-900 transition hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]";
