@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 import { EmptyState } from "@/components/shared/empty-state";
 import { SectionTitle } from "@/components/shared/section-title";
 import { ButtonLink } from "@/components/ui/button";
+import { FeaturedWishlistButton } from "@/features/home/components/featured-wishlist-button";
 import { getProducts } from "@/lib/api";
 import { formatCurrency, safeImage } from "@/lib/utils";
 import type { Product } from "@/types/product";
@@ -28,13 +29,7 @@ function ProductCard({ product }: { product: Product }) {
             unoptimized
           />
         </Link>
-        <button
-          type="button"
-          aria-label={`Add ${product.title} to wishlist`}
-          className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#eadfce] bg-white/90 text-zinc-800 shadow-sm transition-colors hover:border-[#b08d57] hover:text-[#9a763d] dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-200 dark:hover:border-[#d6b36a] dark:hover:text-[#d6b36a]"
-        >
-          <Heart className="h-4 w-4" aria-hidden="true" />
-        </button>
+        <FeaturedWishlistButton product={product} />
       </div>
 
       <div className="flex min-h-64 flex-col p-5">
