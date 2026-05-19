@@ -11,7 +11,6 @@ The application uses a luxury storefront visual direction with warm ivory backgr
 - **Repository:** `https://github.com/NaimurRahmannn/Kenakata-ecommerce-storefront-Next.js-`
 - **Deployment:** Render
 - **Live url:** `https://kenakata-ecommerce-storefront-next-js.onrender.com/`
-- **Assignment:** `https://cheery-treacle-799105.netlify.app/assignment`
 
 ---
 
