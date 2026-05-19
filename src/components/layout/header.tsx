@@ -96,8 +96,8 @@ export function Header() {
             </Link>
 
             <div className="flex items-center gap-1 sm:gap-2 lg:col-start-3 lg:row-start-1 lg:justify-end">
-              <button
-                type="button"
+              <Link
+                href="/wishlist"
                 aria-label={`Wishlist (${displayWishlistCount} items)`}
                 className="relative rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]"
               >
@@ -105,7 +105,7 @@ export function Header() {
                 <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#b88a39] px-1 text-[10px] font-semibold leading-none text-white">
                   {displayWishlistCount}
                 </span>
-              </button>
+              </Link>
               <Link
                 href="/cart"
                 aria-label={`View cart (${displayCartCount} items)`}
