@@ -1,202 +1,140 @@
-# KenaKata.com — Modern E-commerce Storefront
+<!--
+	README goals:
+	- Be reviewer-friendly (assignment criteria)
+	- Be contributor-friendly (setup + architecture)
+	- Stay accurate to what the repo actually does
+-->
 
-KenaKata.com is a production-style e-commerce storefront built with **Next.js App Router**, **TypeScript**, **Tailwind CSS**, and the **Platzi Fake Store API**. The project was created as a capstone assignment to demonstrate scalable frontend architecture, modern rendering decisions, reusable components, client-side state management, authentication, cart/wishlist behavior, and deployment readiness.
+# KenaKata.com — Modern E‑commerce Storefront
 
-The application uses a luxury storefront visual direction with warm ivory backgrounds, muted gold accents, responsive layouts, light/dark theme support, and polished shopping flows from browsing products to checkout.
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js) ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=0B0F19) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38BDF8?logo=tailwindcss&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-State_Management-433E38) ![ESLint](https://img.shields.io/badge/ESLint-9-4B32C3?logo=eslint&logoColor=white)
 
----
+Production-style e‑commerce storefront built with **Next.js App Router**, **TypeScript**, and **Tailwind CSS**, powered by the **Platzi Fake Store API**. This capstone focuses on scalable frontend architecture, modern Next.js rendering decisions, polished shopping flows (browse → details → cart → checkout), and reliable client state (auth/cart/wishlist) without a custom backend.
 
-## Live / Repository
+![KenaKata hero](public/images/hero-img.png)
 
-- **Repository:** `https://github.com/NaimurRahmannn/Kenakata-ecommerce-storefront-Next.js-`
-- **Deployment:** Render
-- **Live url:** `https://kenakata-ecommerce-storefront-next-js.onrender.com/`
+## Links
 
----
+- Live: https://kenakata-ecommerce-storefront-next-js.onrender.com/
+- Repo: https://github.com/NaimurRahmannn/Kenakata-ecommerce-storefront-Next.js-
+- Assignment brief: https://cheery-treacle-799105.netlify.app/assignment
+- API base: https://api.escuelajs.co/api/v1
 
-## Project Overview
+## Table of contents
 
-The goal of KenaKata.com is to simulate a modern online storefront using real API data and production-minded frontend patterns. The application supports public shopping pages, product discovery, product details, cart management, wishlist management, authentication, checkout UI, dashboard entry, and global theme switching.
-
-### Core Features
-
-- Public storefront homepage
-- Hero section, featured products, and category browsing
-- Product listing / shop page
-- Product search, category filtering, price filtering, sorting, and pagination
-- Product details page with gallery, product information, tabs, and related products
-- Add to cart with quantity control
-- Cart page with item management and order summary
-- Wishlist page and wishlist toggling from product cards/details
-- Checkout page with shipping/payment selection UI
-- Login and registration using Platzi Fake Store auth/users API
-- Authenticated user dropdown in the header
-- Guest/user-separated cart and wishlist persistence
-- Light/dark theme toggle using `next-themes`
-- Responsive layout across mobile, tablet, and desktop
-- Loading, empty, not-found, and error states
-
----
-
-## Tech Stack
-
-### Framework and Language
-
-- **Next.js 16**
-- **React 19**
-- **TypeScript**
-- **App Router**
-
-### Styling and UI
-
-- **Tailwind CSS v4**
-- **Lucide React** for icons
-- **clsx** and **tailwind-merge** for class composition
-- **next-themes** for light/dark theme switching
-- **Sonner** for toast notifications
-
-### State and Forms
-
-- **Zustand** for cart, wishlist, and auth state
-- **React Hook Form** for auth/checkout forms
-- **Zod** for schema validation
-- **@hookform/resolvers** for form validation integration
-
-### Testing Tooling Installed
-
-- **Vitest**
-- **Testing Library**
-- **jsdom**
+- [Features](#features)
+- [Tech stack](#tech-stack)
+- [Project structure](#project-structure)
+- [API integration](#api-integration)
+- [Rendering strategy](#rendering-strategy)
+- [Tradeoffs](#tradeoffs)
+- [Performance considerations](#performance-considerations)
+- [Challenges](#challenges)
+- [Setup (local)](#setup-local)
+- [Scripts](#scripts)
+- [Environment variables](#environment-variables)
+- [Deployment (Render)](#deployment-render)
+- [Test credentials](#test-credentials)
+- [Future improvements](#future-improvements)
 
 ---
 
-## API Integration
+## Features
 
-The project uses the Platzi Fake Store API.
+### Public storefront
 
-### Main API Areas
+- Home page with hero, featured products, and categories
+- Product listing with **search**, **category filter**, **price range**, **sorting**, and **pagination**
+- Robust **loading / empty / error / not-found** states across routes
 
-- `GET /products` — product listing data
-- `GET /products/:id` — product details
-- `GET /categories` — category data
-- `POST /auth/login` — login authentication
-- `GET /auth/profile` — authenticated user profile
-- `POST /users` — user registration
+### Product details
 
-The API base URL is centralized in:
+- Image gallery
+- Product info + details tabs
+- Related products
+- Add to cart with quantity controls
+- Wishlist toggle from cards and details
 
-```txt
-src/constants/api.ts
-```
+### Cart & checkout
 
-Reusable API helpers are defined in:
+- Add/remove/update cart items
+- Order summary
+- Checkout UI with shipping/payment selection
+- Mocked payment flow (UI-level)
 
-```txt
-src/lib/api.ts
-src/lib/auth-api.ts
-```
+### Authentication
+
+- Login + register (Platzi Fake Store API)
+- Header user menu + logout
+- **Guest vs authenticated** cart/wishlist separation so switching accounts doesn’t overwrite guest state
+
+### UX quality
+
+- Fully responsive layout (mobile → desktop)
+- Light/dark theme toggle via `next-themes`
 
 ---
 
-## Architecture Explanation
+## Tech stack
 
-The project follows a feature-oriented architecture on top of the Next.js App Router. Route files stay inside `src/app`, while reusable domain-specific UI and logic live inside `src/features`.
+- **Next.js 16** (App Router) + **React 19**
+- **TypeScript** for type safety
+- **Tailwind CSS v4** for styling
+- **Zustand** for auth/cart/wishlist state + localStorage persistence
+- **React Hook Form** + **Zod** for form handling and validation
+- **Lucide React** icons, **Sonner** toasts, `clsx` + `tailwind-merge` for class composition
+
+Testing tooling is installed (`vitest`, Testing Library, `jsdom`), even though this repo currently focuses on product features over test coverage.
+
+---
+
+## Project structure
+
+Feature-oriented architecture on top of App Router: pages live in `src/app`, reusable UI in `src/components`, and domain logic/UI in `src/features`.
 
 ```txt
 src/
-├── app/
-│   ├── cart/
-│   ├── checkout/
-│   ├── dashboard/
-│   ├── login/
-│   ├── products/
-│   │   └── [id]/
-│   ├── register/
-│   ├── wishlist/
-│   ├── error.tsx
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── loading.tsx
-│   ├── not-found.tsx
-│   └── page.tsx
-├── components/
-│   ├── auth/
-│   ├── layout/
-│   ├── providers/
-│   ├── shared/
-│   └── ui/
-├── constants/
-├── features/
-│   ├── auth/
-│   ├── cart/
-│   ├── checkout/
-│   ├── home/
-│   ├── products/
-│   └── wishlist/
-├── hooks/
-├── lib/
-├── store/
-└── types/
+	app/                 # Routing + page composition
+	components/          # App-wide shared components (layout, providers, ui)
+	constants/           # Centralized constants (API base, routes, payment methods)
+	features/            # Domain modules (home/products/cart/checkout/auth/wishlist)
+	hooks/               # Shared hooks
+	lib/                 # API helpers + utilities
+	store/               # Zustand stores
+	types/               # Shared TypeScript types
 ```
 
-### App Layer
+### Why this architecture?
 
-The `src/app` directory owns routing and page composition:
-
-- `/` renders the storefront homepage
-- `/products` renders the shop/collection page
-- `/products/[id]` renders product details
-- `/cart` renders the cart experience
-- `/wishlist` renders wishlist items
-- `/checkout` renders checkout UI
-- `/login` and `/register` handle auth pages
-- `/dashboard` is the authenticated user destination
-
-### Components Layer
-
-`src/components` stores shared application-level components:
-
-- `layout` — header, footer, user menu, theme toggle
-- `providers` — theme provider
-- `auth` — auth synchronization component
-- `shared` — container, section title, empty state
-- `ui` — base UI primitives such as buttons and inputs
-
-### Feature Layer
-
-`src/features` groups UI and logic by domain:
-
-- `home` — hero, featured products, category sections
-- `products` — product grid, product card, filters, sort, gallery, details tabs, related products
-- `cart` — cart item list, order summary, recommendations
-- `checkout` — checkout content and order summary
-- `auth` — login/register forms and validation schemas
-- `wishlist` — wishlist UI
-
-This makes the project easier to scale because product-specific UI does not get mixed with auth, cart, or checkout logic.
-
-### Store Layer
-
-`src/store` contains Zustand stores:
-
-- `auth-store.ts` — user, access token, refresh token, authentication status
-- `cart-store.ts` — cart items, quantity actions, subtotal calculation, owner-based persistence
-- `wishlist-store.ts` — wishlist items and owner-based persistence
-
-The cart and wishlist stores use separate owner keys:
-
-```txt
-guest
-user:<userId>
-```
-
-This allows guest users and authenticated users to keep separate cart and wishlist states.
+- Keeps route files small and compositional
+- Avoids “big components” by grouping features by domain
+- Makes it easy to scale pages without mixing concerns (auth vs products vs cart)
 
 ---
 
-## Rendering Strategy Decisions
+## API integration
 
-The project uses a hybrid rendering model.
+The app consumes the Platzi Fake Store API.
+
+Common endpoints used:
+
+- `GET /products`
+- `GET /products/:id`
+- `GET /categories`
+- `POST /auth/login`
+- `GET /auth/profile`
+- `POST /users`
+
+Implementation locations:
+
+- API base URL: `src/constants/api.ts`
+- Reusable fetch helpers: `src/lib/api.ts`, `src/lib/auth-api.ts`
+
+---
+
+## Rendering strategy
+
+This project uses a hybrid rendering model.
 
 ### Server Components by Default
 
@@ -243,7 +181,7 @@ Cart, wishlist, and auth state are stored in localStorage through Zustand. This 
 
 ---
 
-## Tradeoffs Made
+## Tradeoffs
 
 ### LocalStorage Instead of Backend Persistence
 
@@ -281,7 +219,7 @@ The shop page fetches a larger product set and applies search, price filtering, 
 
 ---
 
-## Challenges Faced
+## Challenges
 
 ### 1. Hydration Mismatches
 
@@ -306,6 +244,49 @@ The luxury light theme used many warm backgrounds and custom colors. Dark mode r
 ### 6. Deployment Fixes
 
 Deployment required resolving build-time issues such as suspense/hydration-related behavior and ensuring the app builds correctly in the Render environment.
+
+### 7. `searchParams` Can Be a Promise (Pagination Falling Back to Page 1)
+
+In the App Router, `searchParams` may be typed/provided as a **Promise** in server components depending on Next.js version and route configuration. Treating it like a plain object can cause subtle bugs where query-driven state (especially pagination) silently falls back to defaults (e.g., always returning to page 1).
+
+Fix:
+
+- Normalize `searchParams` by awaiting it before reading values.
+- Parse the value defensively (`string | string[] | undefined`).
+
+Example pattern:
+
+```ts
+// Server Component page
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+	const params = await searchParams;
+	const page = Number(params.page ?? 1) || 1;
+
+	// ...use `page` for pagination
+}
+```
+
+### 8. Suspense / Async Boundaries During Deployment
+
+Some production builds surfaced issues around async rendering and boundaries (for example, components relying on dynamic route/search state). The fix was to keep server/client boundaries clean and ensure async page composition is structured in a way that’s compatible with deployment behavior.
+
+### 9. URL-Driven Filters Without UI Desync
+
+Keeping filtering/sorting/pagination in the URL is great for shareable links, but it introduces edge cases:
+
+- Changing one filter should reset pagination
+- Multiple controls (search, slider, category, sort) must not fight each other
+- Default values must be applied consistently when params are missing
+
+The solution was to standardize query param parsing and ensure each interaction updates URL state in a predictable way.
+
+### 10. Responsive Filters and Layout Consistency
+
+Making the product discovery UI work well on mobile required a few iterations (filters layout, spacing, and how/where filters are displayed). Several UI tweaks focused on preventing layout jumps and ensuring the filtering UX remains usable on smaller screens.
 
 ---
 
@@ -338,7 +319,12 @@ The main branch contains a clear feature-by-feature commit history, including wo
 
 ---
 
-## Setup Instructions
+## Setup (local)
+
+### Prerequisites
+
+- Node.js 18+ recommended (for Next.js 16)
+- npm (or your preferred package manager)
 
 ### 1. Clone the repository
 
@@ -385,6 +371,15 @@ npm run start
 
 ---
 
+## Scripts
+
+- `npm run dev` — start Next.js in dev mode
+- `npm run build` — production build
+- `npm run start` — run the production server
+- `npm run lint` — run ESLint
+
+---
+
 ## Environment Variables
 
 This project currently uses the public Platzi Fake Store API and does not require private environment variables.
@@ -392,13 +387,12 @@ This project currently uses the public Platzi Fake Store API and does not requir
 If needed later, create `.env.local` and move the API base URL into:
 
 ```env
-NEXT_PUBLIC_API_BASE_URL="https://api.escuelajs.co/api/v1" 
-(Public API that's why provided)
+NEXT_PUBLIC_API_BASE_URL="https://api.escuelajs.co/api/v1"
 ```
 
 ---
 
-## Render Deployment Notes
+## Deployment (Render)
 
 Recommended Render settings:
 
@@ -412,29 +406,28 @@ Because this is a Next.js app, make sure Render uses a supported Node version an
 
 ---
 
-## Test Credentials
+## Test credentials
 
 For Platzi Fake Store API login testing:
 
 ```txt
-Email: john@mail.com
-Password: changeme
+example:
+Email: Testusername@gmail.com
+Password: 123456
 ```
 
 Registration can be tested with a new unique email address.
 
 ---
 
-## Future Improvements
+## Future improvements
 
 - Add real backend order creation and order history
 - Sync cart and wishlist to a database for authenticated users
 - Add guest cart merge prompt after login
 - Add real payment gateway integration
-- Add protected middleware for dashboard and checkout routes
 - Add user profile editing
 - Add real reviews and rating system
-- Add product skeleton loading states across all product grids
 - Add unit tests for stores, schemas, and utility functions
 - Add integration tests for cart, wishlist, auth, and checkout flows
 - Add image CDN/domain validation for safer external images
