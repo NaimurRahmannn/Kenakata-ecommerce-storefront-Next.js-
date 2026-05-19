@@ -56,7 +56,7 @@ export function WishlistContent() {
         {/* Top */}
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div>
-            <h1 className="font-serif text-4xl font-semibold tracking-tight text-neutral-950 md:text-6xl">
+            <h1 className="font-serif text-2xl font-medium tracking-tight text-neutral-950 md:text-6xl">
               My Wishlist
             </h1>
             <p className="mt-3 text-lg text-neutral-600">
