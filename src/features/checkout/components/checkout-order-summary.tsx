@@ -140,20 +140,6 @@ export function CheckoutOrderSummary({
       </div>
 
       <div className="mt-5 border-t border-neutral-200 pt-5">
-        <p className="text-sm text-neutral-700">Have a discount code?</p>
-        <div className="mt-2 flex gap-3">
-          <input
-            type="text"
-            placeholder="Enter code"
-            className="h-11 flex-1 rounded-lg border border-neutral-300 px-4 text-sm outline-none focus:border-neutral-900"
-          />
-          <button className="h-11 rounded-lg bg-[#ead8c3] px-7 text-sm font-semibold text-neutral-950 transition hover:bg-[#dfc4a6]">
-            Apply
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-5 border-t border-neutral-200 pt-5">
         <div className="flex items-end justify-between">
           <span className="font-serif text-2xl font-semibold">Total</span>
           <div className="text-right">

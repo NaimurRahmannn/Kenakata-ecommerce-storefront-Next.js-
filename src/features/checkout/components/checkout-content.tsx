@@ -416,7 +416,7 @@ export function CheckoutContent() {
             <PaymentTab
               active={paymentMethod === "paypal"}
               text="PayPal"
-              image="/images/paypal.png"
+              image="/images/PayPal-Monogram-FullColor-RGB.png"
               onSelect={() => handlePaymentSelect("paypal")}
             />
             <PaymentTab

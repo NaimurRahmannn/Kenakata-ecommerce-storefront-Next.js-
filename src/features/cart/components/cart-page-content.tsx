@@ -203,24 +203,6 @@ export function CartPageContent({ products }: CartPageContentProps) {
             </div>
           </div>
 
-          <div className="mt-5">
-            <label className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
-              Discount code
-            </label>
-            <div className="mt-2 flex gap-2">
-              <input
-                type="text"
-                placeholder="Enter code 123"
-                className="w-full rounded-lg border border-[#e8dfd3] bg-[#fffdf8] px-3 py-2 text-sm text-zinc-700 outline-none focus:border-[#c3a06a]"
-              />
-              <button
-                type="button"
-                className="rounded-lg border border-[#c3a06a] px-4 py-2 text-sm font-semibold text-[#9a763d] transition-colors hover:bg-[#f4eddf]"
-              >
-                Apply
-              </button>
-            </div>
-          </div>
 
           <div className="mt-6 border-t border-[#eee5d8] pt-4">
             <div className="flex items-center justify-between text-base font-semibold text-zinc-950">
