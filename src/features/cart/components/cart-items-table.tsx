@@ -1,24 +1,43 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
 
 import { EmptyState } from "@/components/shared/empty-state";
 import { formatCurrency, safeImage } from "@/lib/utils";
+import { useHydrated } from "@/lib/use-hydrated";
 import { useCartStore } from "@/store/cart-store";
 
-export function CartItemsTable() {
+interface CartItemsTableProps {
+  allItemsSelected: boolean;
+  selectedItemIds: number[];
+  someItemsSelected: boolean;
+  onToggleAll: () => void;
+  onToggleItem: (productId: number) => void;
+}
+
+export function CartItemsTable({
+  allItemsSelected,
+  selectedItemIds,
+  someItemsSelected,
+  onToggleAll,
+  onToggleItem,
+}: CartItemsTableProps) {
   const items = useCartStore((state) => state.items);
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHydrated();
+  const selectAllRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate =
+        someItemsSelected && !allItemsSelected;
+    }
+  }, [allItemsSelected, someItemsSelected]);
 
   if (!mounted) {
     return (
@@ -50,7 +69,17 @@ export function CartItemsTable() {
 
   return (
     <div className="rounded-xl border border-[#e8dfd3] bg-white shadow-sm">
-      <div className="hidden grid-cols-[2.2fr_0.9fr_1fr_0.8fr_0.4fr] gap-4 border-b border-[#eee5d8] px-6 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500 lg:grid">
+      <div className="hidden grid-cols-[0.35fr_2.2fr_0.9fr_1fr_0.8fr_0.4fr] gap-4 border-b border-[#eee5d8] px-6 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500 lg:grid">
+        <label className="flex items-center">
+          <span className="sr-only">Select all products</span>
+          <input
+            ref={selectAllRef}
+            type="checkbox"
+            checked={allItemsSelected}
+            onChange={onToggleAll}
+            className="h-4 w-4 rounded border-[#c3a06a] accent-[#9a763d]"
+          />
+        </label>
         <span>Product</span>
         <span>Price</span>
         <span>Quantity</span>
@@ -62,8 +91,17 @@ export function CartItemsTable() {
         {items.map((item) => (
           <div
             key={item.id}
-            className="grid gap-4 px-6 py-5 lg:grid-cols-[2.2fr_0.9fr_1fr_0.8fr_0.4fr] lg:items-center"
+            className="grid gap-4 px-6 py-5 lg:grid-cols-[0.35fr_2.2fr_0.9fr_1fr_0.8fr_0.4fr] lg:items-center"
           >
+            <label className="flex items-center">
+              <span className="sr-only">Select {item.title}</span>
+              <input
+                type="checkbox"
+                checked={selectedItemIds.includes(item.id)}
+                onChange={() => onToggleItem(item.id)}
+                className="h-4 w-4 rounded border-[#c3a06a] accent-[#9a763d]"
+              />
+            </label>
             <div className="flex items-start gap-4">
               <div className="relative h-20 w-20 overflow-hidden rounded-lg border border-[#e8dfd3] bg-[#faf7f1]">
                 <Image
