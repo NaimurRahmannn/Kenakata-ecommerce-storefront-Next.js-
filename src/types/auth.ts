@@ -3,6 +3,13 @@ export type LoginCredentials = {
   password: string;
 };
 
+export type RegisterCredentials = {
+  name: string;
+  email: string;
+  password: string;
+  avatar?: string;
+};
+
 export type AuthTokens = {
   access_token: string;
   refresh_token: string;

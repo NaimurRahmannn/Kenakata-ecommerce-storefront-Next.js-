@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { EyeOff, Lock, Mail, User } from "lucide-react";
+
+import { RegisterForm } from "@/features/auth/components/register-form";
 
 export default function RegisterPage() {
   return (
@@ -40,143 +41,7 @@ export default function RegisterPage() {
               </p>
             </div>
 
-            <form className="mt-4 space-y-3">
-              {/* Full Name */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-neutral-900"
-                >
-                  Full Name
-                </label>
-
-                <div className="relative">
-                  <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
-
-                  <input
-                    id="name"
-                    type="text"
-                    placeholder="Enter your full name"
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white pl-10 pr-4 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900"
-                  />
-                </div>
-              </div>
-
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-neutral-900"
-                >
-                  Email Address
-                </label>
-
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
-
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white pl-10 pr-4 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900"
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="mb-2 block text-sm font-medium text-neutral-900"
-                >
-                  Password
-                </label>
-
-                <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
-
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Create a password"
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white pl-10 pr-11 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900"
-                  />
-
-                  <button
-                    type="button"
-                    aria-label="Show password"
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 transition hover:text-neutral-900"
-                  >
-                    <EyeOff className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <p className="mt-1.5 text-xs text-neutral-500">
-                  Must be at least 8 characters long
-                </p>
-              </div>
-
-              {/* Confirm Password */}
-              <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="mb-2 block text-sm font-medium text-neutral-900"
-                >
-                  Confirm Password
-                </label>
-
-                <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
-
-                  <input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Confirm your password"
-                    className="h-11 w-full rounded-lg border border-neutral-300 bg-white pl-10 pr-11 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900"
-                  />
-
-                  <button
-                    type="button"
-                    aria-label="Show confirm password"
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 transition hover:text-neutral-900"
-                  >
-                    <EyeOff className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Terms */}
-              <label className="flex items-start gap-2 text-xs leading-5 text-neutral-700">
-                <input
-                  type="checkbox"
-                  className="mt-1 h-4 w-4 rounded border-neutral-300 accent-neutral-950"
-                />
-                <span>
-                  I agree to the{" "}
-                  <Link
-                    href="/terms"
-                    className="font-semibold text-[#a46d1e] transition hover:text-neutral-950"
-                  >
-                    Terms & Conditions
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/privacy-policy"
-                    className="font-semibold text-[#a46d1e] transition hover:text-neutral-950"
-                  >
-                    Privacy Policy
-                  </Link>
-                </span>
-              </label>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="h-11 w-full rounded-lg bg-neutral-950 text-sm font-semibold text-white transition hover:bg-neutral-800"
-              >
-                Create Account
-              </button>
-            </form>
+            <RegisterForm />
 
             {/* Divider */}
             <div className="my-4 flex items-center gap-4">

@@ -1,5 +1,10 @@
 import { API_BASE_URL, API_ENDPOINTS } from "@/constants/api";
-import type { AuthTokens, AuthUser, LoginCredentials } from "@/types/auth";
+import type {
+  AuthTokens,
+  AuthUser,
+  LoginCredentials,
+  RegisterCredentials,
+} from "@/types/auth";
 
 type ApiErrorResponse = {
   message?: string | string[];
@@ -25,6 +30,8 @@ const getErrorMessage = async (
 
   return fallbackMessage;
 };
+
+const DEFAULT_AVATAR_URL = "https://picsum.photos/800";
 
 export async function loginUser(
   credentials: LoginCredentials
@@ -63,6 +70,42 @@ export async function getAuthProfile(
       response,
       "Failed to fetch your profile."
     );
+    throw new Error(message);
+  }
+
+  return (await response.json()) as AuthUser;
+}
+
+export async function registerUser(
+  credentials: RegisterCredentials
+): Promise<AuthUser> {
+  const payload = {
+    ...credentials,
+    avatar: credentials.avatar?.trim() || DEFAULT_AVATAR_URL,
+  };
+
+  const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.users}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    let message = await getErrorMessage(
+      response,
+      "Registration failed. Please try again."
+    );
+    const normalized = message.toLowerCase();
+
+    if (
+      normalized.includes("email") &&
+      (normalized.includes("exist") || normalized.includes("already"))
+    ) {
+      message = "Email already exists. Please use a different email.";
+    }
+
     throw new Error(message);
   }
 
