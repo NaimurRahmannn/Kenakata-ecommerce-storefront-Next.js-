@@ -6,16 +6,16 @@ import Link from "next/link";
 import { Truck } from "lucide-react";
 
 import { paymentMethods } from "@/constants/payment-methods";
+import {
+  FREE_SHIPPING_THRESHOLD,
+  getCartSummary,
+} from "@/features/cart/lib/cart-summary";
 import { ProductCard } from "@/features/products/components/product-card";
 import { formatCurrency } from "@/lib/utils";
 import { useHydrated } from "@/lib/use-hydrated";
 import { useCartStore } from "@/store/cart-store";
 import type { Product } from "@/types/product";
 import { CartItemsTable } from "./cart-items-table";
-
-const FREE_SHIPPING_THRESHOLD = 99;
-const TAX_RATE = 0.08;
-const STANDARD_SHIPPING = 9.99;
 const MAX_RECOMMENDATIONS = 4;
 
 interface CartPageContentProps {
@@ -83,28 +83,15 @@ export function CartPageContent({ products }: CartPageContentProps) {
     );
   }, [items, products, selectedItems]);
 
-  const selectedQuantity = selectedItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
-  const subtotal = selectedItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-  const shipping =
-    selectedItems.length === 0 || subtotal >= FREE_SHIPPING_THRESHOLD
-      ? 0
-      : STANDARD_SHIPPING;
-  const tax = subtotal * TAX_RATE;
-  const total = subtotal + shipping + tax;
-  const remainingForFreeShipping = Math.max(
-    FREE_SHIPPING_THRESHOLD - subtotal,
-    0
-  );
-  const freeShippingProgress = Math.min(
-    (subtotal / FREE_SHIPPING_THRESHOLD) * 100,
-    100
-  );
+  const {
+    quantity: selectedQuantity,
+    subtotal,
+    shipping,
+    tax,
+    total,
+    remainingForFreeShipping,
+    freeShippingProgress,
+  } = getCartSummary(selectedItems);
   const allItemsSelected =
     items.length > 0 && effectiveSelectedItemIds.length === items.length;
   const someItemsSelected = effectiveSelectedItemIds.length > 0;
