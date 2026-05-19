@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Truck } from "lucide-react";
 
+import { paymentMethods } from "@/constants/payment-methods";
 import { formatCurrency } from "@/lib/utils";
 import { useHydrated } from "@/lib/use-hydrated";
 import { useCartStore } from "@/store/cart-store";
@@ -12,14 +14,6 @@ import { CartItemsTable } from "./cart-items-table";
 const FREE_SHIPPING_THRESHOLD = 99;
 const TAX_RATE = 0.08;
 const STANDARD_SHIPPING = 9.99;
-
-const paymentBadges = [
-  "Visa",
-  "Mastercard",
-  "Amex",
-  "Apple Pay",
-  "PayPal",
-];
 
 export function CartPageContent() {
   const items = useCartStore((state) => state.items);
@@ -230,13 +224,20 @@ export function CartPageContent() {
             </Link>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-2 text-xs text-zinc-500">
-            {paymentBadges.map((badge) => (
+          <div className="mt-6 flex flex-wrap gap-2">
+            {paymentMethods.map((method) => (
               <span
-                key={badge}
-                className="rounded-full border border-[#e8dfd3] px-3 py-1"
+                key={method.label}
+                className="inline-flex h-8 min-w-12 items-center justify-center rounded border border-[#e8dfd3] bg-white px-2 shadow-sm"
               >
-                {badge}
+                <Image
+                  src={method.src}
+                  alt={method.label}
+                  width={method.width}
+                  height={method.height}
+                  unoptimized
+                  className="max-h-5 w-auto object-contain"
+                />
               </span>
             ))}
           </div>
