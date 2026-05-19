@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface WishlistItem {
   id: number;
@@ -23,66 +22,126 @@ interface WishlistItemInput {
 
 interface WishlistStore {
   items: WishlistItem[];
+  ownerKey: string;
+  setOwner: (ownerKey: string) => void;
   addItem: (product: WishlistItemInput) => void;
   removeItem: (productId: number) => void;
   toggleItem: (product: WishlistItemInput) => void;
   clearWishlist: () => void;
   hasItem: (productId: number) => boolean;
+  isInWishlist: (productId: number) => boolean;
   getTotalItems: () => number;
 }
 
-export const useWishlistStore = create<WishlistStore>()(
-  persist(
-    (set, get) => ({
-      items: [],
-      addItem: (product) => {
-        set((state) => {
-          const exists = state.items.some((item) => item.id === product.id);
+const WISHLIST_STORAGE_PREFIX = "wishlist-storage";
+const isBrowser = typeof window !== "undefined";
 
-          if (exists) {
-            return state;
-          }
+const getWishlistStorageKey = (ownerKey: string) =>
+  `${WISHLIST_STORAGE_PREFIX}:${ownerKey}`;
 
-          const image = product.image ?? product.images?.[0] ?? "";
-          const categoryName =
-            product.categoryName ?? product.category?.name;
+const loadWishlistItems = (ownerKey: string): WishlistItem[] => {
+  if (!isBrowser) {
+    return [];
+  }
 
-          return {
-            items: [
-              ...state.items,
-              {
-                id: product.id,
-                title: product.title,
-                price: product.price,
-                image,
-                categoryName,
-              },
-            ],
-          };
-        });
-      },
-      removeItem: (productId) =>
-        set((state) => ({
-          items: state.items.filter((item) => item.id !== productId),
-        })),
-      toggleItem: (product) => {
-        const exists = get().items.some((item) => item.id === product.id);
+  const stored = window.localStorage.getItem(
+    getWishlistStorageKey(ownerKey)
+  );
+  if (!stored) {
+    return [];
+  }
 
-        if (exists) {
-          get().removeItem(product.id);
-          return;
-        }
+  try {
+    const parsed = JSON.parse(stored) as WishlistItem[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
 
-        get().addItem(product);
-      },
-      clearWishlist: () => set({ items: [] }),
-      hasItem: (productId) =>
-        get().items.some((item) => item.id === productId),
-      getTotalItems: () => get().items.length,
-    }),
-    {
-      name: "kenakata-wishlist",
-      storage: createJSONStorage(() => localStorage),
+const saveWishlistItems = (ownerKey: string, items: WishlistItem[]) => {
+  if (!isBrowser) {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(
+      getWishlistStorageKey(ownerKey),
+      JSON.stringify(items)
+    );
+  } catch {
+    // Ignore storage errors.
+  }
+};
+
+const initialOwnerKey = "guest";
+const initialItems = loadWishlistItems(initialOwnerKey);
+
+export const useWishlistStore = create<WishlistStore>()((set, get) => ({
+  items: initialItems,
+  ownerKey: initialOwnerKey,
+  setOwner: (nextOwnerKey) => {
+    const currentOwnerKey = get().ownerKey;
+
+    if (currentOwnerKey === nextOwnerKey) {
+      return;
     }
-  )
-);
+
+    saveWishlistItems(currentOwnerKey, get().items);
+    const nextItems = loadWishlistItems(nextOwnerKey);
+
+    set({ ownerKey: nextOwnerKey, items: nextItems });
+  },
+  addItem: (product) => {
+    set((state) => {
+      const exists = state.items.some((item) => item.id === product.id);
+
+      if (exists) {
+        return state;
+      }
+
+      const image = product.image ?? product.images?.[0] ?? "";
+      const categoryName = product.categoryName ?? product.category?.name;
+
+      const items = [
+        ...state.items,
+        {
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          image,
+          categoryName,
+        },
+      ];
+
+      saveWishlistItems(state.ownerKey, items);
+      return { items };
+    });
+  },
+  removeItem: (productId) =>
+    set((state) => {
+      const items = state.items.filter((item) => item.id !== productId);
+      saveWishlistItems(state.ownerKey, items);
+      return { items };
+    }),
+  toggleItem: (product) => {
+    const exists = get().items.some((item) => item.id === product.id);
+
+    if (exists) {
+      get().removeItem(product.id);
+      return;
+    }
+
+    get().addItem(product);
+  },
+  clearWishlist: () =>
+    set((state) => {
+      saveWishlistItems(state.ownerKey, []);
+      return { items: [] };
+    }),
+  hasItem: (productId) =>
+    get().items.some((item) => item.id === productId),
+  isInWishlist: (productId) =>
+    get().items.some((item) => item.id === productId),
+  getTotalItems: () => get().items.length,
+}));
