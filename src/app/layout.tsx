@@ -27,6 +27,11 @@ export const metadata: Metadata = {
   description: "Discover amazing products at KenaKata. Shop now!",
   keywords: ["ecommerce", "shopping", "products", "store"],
   authors: [{ name: "KenaKata Team" }],
+  icons: {
+    icon: "/images/kenakata-logo.png",
+    shortcut: "/images/kenakata-logo.png",
+    apple: "/images/kenakata-logo.png",
+  },
   robots: {
     index: true,
     follow: true,
