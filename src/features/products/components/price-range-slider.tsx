@@ -82,7 +82,7 @@ export function PriceRangeSlider({
   };
 
   const trackStyle = {
-    background: `linear-gradient(to right, #faf7f1 0%, #faf7f1 ${minPercent}%, #c3a06a ${minPercent}%, #c3a06a ${maxPercent}%, #faf7f1 ${maxPercent}%, #faf7f1 100%)`,
+    background: `linear-gradient(to right, var(--range-track) 0%, var(--range-track) ${minPercent}%, var(--range-fill) ${minPercent}%, var(--range-fill) ${maxPercent}%, var(--range-track) ${maxPercent}%, var(--range-track) 100%)`,
   };
 
   return (
@@ -114,7 +114,7 @@ export function PriceRangeSlider({
           className="price-range-input price-range-input--max"
         />
       </div>
-      <div className="flex items-center justify-between text-xs text-zinc-600">
+      <div className="flex items-center justify-between text-xs text-zinc-600 dark:text-zinc-400">
         <span>{formatCurrency(minValue)}</span>
         <span>{formatCurrency(maxValue)}</span>
       </div>

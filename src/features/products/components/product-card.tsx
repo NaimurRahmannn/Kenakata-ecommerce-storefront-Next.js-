@@ -34,8 +34,8 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <article className="group overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c3a06a] hover:shadow-lg hover:shadow-zinc-900/10">
-      <div className="relative h-44 bg-[#faf7f1] sm:h-48">
+    <article className="group overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c3a06a] hover:shadow-lg hover:shadow-zinc-900/10 dark:border-zinc-800 dark:bg-[#141310] dark:hover:border-[#d6b36a]">
+      <div className="relative h-44 bg-[#faf7f1] sm:h-48 dark:bg-[#1a1916]">
         <Link href={productHref} aria-label={product.title}>
           <Image
             src={safeImage(product.images?.[0])}
@@ -54,8 +54,10 @@ export function ProductCard({ product }: ProductCardProps) {
           } ${product.title} ${isWishlisted ? "from" : "to"} wishlist`}
           aria-pressed={isWishlisted}
           onClick={handleWishlistToggle}
-          className={`absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/80 hover:text-[#9a763d] ${
-            isWishlisted ? "text-[#9a763d]" : "text-zinc-600"
+          className={`absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-white/80 hover:text-[#9a763d] dark:hover:bg-zinc-900/80 dark:hover:text-[#d6b36a] ${
+            isWishlisted
+              ? "text-[#9a763d] dark:text-[#d6b36a]"
+              : "text-zinc-600 dark:text-zinc-300"
           }`}
         >
           <Heart
@@ -68,14 +70,17 @@ export function ProductCard({ product }: ProductCardProps) {
         </button>
       </div>
 
-      <div className="border-t border-[#eee5d8] p-4">
-        <h2 className="line-clamp-1 text-base font-semibold leading-6 text-zinc-950">
-          <Link href={productHref} className="transition-colors hover:text-[#9a763d]">
+      <div className="border-t border-[#eee5d8] p-4 dark:border-zinc-800">
+        <h2 className="line-clamp-1 text-base font-semibold leading-6 text-zinc-950 dark:text-zinc-100">
+          <Link
+            href={productHref}
+            className="transition-colors hover:text-[#9a763d] dark:hover:text-[#d6b36a]"
+          >
             {product.title}
           </Link>
         </h2>
 
-        <p className="mt-1 text-sm font-semibold text-zinc-950">
+        <p className="mt-1 text-sm font-semibold text-zinc-950 dark:text-zinc-100">
           {formatCurrency(product.price)}
         </p>
 
@@ -89,7 +94,7 @@ export function ProductCard({ product }: ProductCardProps) {
               />
             ))}
           </div>
-          <span className="text-xs text-zinc-500">
+          <span className="text-xs text-zinc-500 dark:text-zinc-400">
             ({getReviewCount(product.id)})
           </span>
         </div>

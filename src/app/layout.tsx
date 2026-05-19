@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { AuthStateSync } from "@/components/auth/auth-state-sync";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 import "./globals.css";
 
@@ -40,16 +41,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="bg-white dark:bg-zinc-950">
-        <AuthStateSync />
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <Toaster richColors position="top-right" />
+      <body className="min-h-screen bg-transparent text-zinc-950 dark:text-zinc-100">
+        <ThemeProvider>
+          <AuthStateSync />
+          <Toaster richColors position="top-right" />
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

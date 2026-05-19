@@ -15,26 +15,28 @@ export default async function CartPage() {
   }
 
   return (
-    <div className="bg-[#fffdf8] text-zinc-950">
+    <div className="bg-[#fffdf8] text-zinc-950 dark:bg-[#0f0e0c] dark:text-zinc-100">
       <Container className="py-8 sm:py-10 lg:py-12">
         <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
           <Link
             href="/"
-            className="text-zinc-500 transition-colors hover:text-[#9a763d]"
+            className="text-zinc-500 transition-colors hover:text-[#9a763d] dark:text-zinc-400 dark:hover:text-[#d6b36a]"
           >
             Home
           </Link>
-          <span className="text-[#9a763d]" aria-hidden="true">
+          <span className="text-[#9a763d] dark:text-[#d6b36a]" aria-hidden="true">
             &gt;
           </span>
-          <span className="font-medium text-[#9a763d]">Cart</span>
+          <span className="font-medium text-[#9a763d] dark:text-[#d6b36a]">
+            Cart
+          </span>
         </nav>
 
         <div className="mt-6 flex flex-col gap-2">
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl dark:text-zinc-100">
             Your Cart
           </h1>
-          <p className="text-sm text-zinc-600">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
             Review your selections before checkout.
           </p>
         </div>

@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf7f1;
+  --foreground: #18181b;
+  --range-track: #faf7f1;
+  --range-border: #e8dfd3;
+  --range-thumb: #faf7f1;
+  --range-fill: #c3a06a;
 }
 
 @theme inline {
@@ -12,11 +18,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0f0e0c;
+  --foreground: #f4f4f5;
+  --range-track: #1a1916;
+  --range-border: #2f2c27;
+  --range-thumb: #1a1916;
+  --range-fill: #d6b36a;
 }
 
 body {
@@ -35,8 +43,8 @@ html {
 .price-range-track {
   height: 0.5rem;
   border-radius: 9999px;
-  background: #faf7f1;
-  border: 1px solid #e8dfd3;
+  background: var(--range-track);
+  border: 1px solid var(--range-border);
   width: 100%;
 }
 
@@ -66,8 +74,8 @@ html {
   width: 16px;
   height: 16px;
   border-radius: 9999px;
-  background: #faf7f1;
-  border: 2px solid #c3a06a;
+  background: var(--range-thumb);
+  border: 2px solid var(--range-fill);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   pointer-events: auto;
   cursor: pointer;
@@ -77,8 +85,8 @@ html {
   width: 16px;
   height: 16px;
   border-radius: 9999px;
-  background: #faf7f1;
-  border: 2px solid #c3a06a;
+  background: var(--range-thumb);
+  border: 2px solid var(--range-fill);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   pointer-events: auto;
   cursor: pointer;

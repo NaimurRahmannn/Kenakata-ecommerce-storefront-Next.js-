@@ -30,7 +30,7 @@ export function SortSelect({ currentSort }: SortSelectProps) {
   };
 
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm w-fit">
+    <div className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm w-fit dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-300">
       <label htmlFor="sort" className="whitespace-nowrap">
         Sort by:
       </label>
@@ -41,13 +41,13 @@ export function SortSelect({ currentSort }: SortSelectProps) {
           value={currentSort}
           onChange={handleChange}
           aria-label="Sort products"
-          className="appearance-none bg-transparent pr-7 font-medium text-zinc-950 focus:outline-none"
+          className="appearance-none bg-transparent pr-7 font-medium text-zinc-950 focus:outline-none dark:text-zinc-100"
         >
           <option value="newest">Newest</option>
           <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
         </select>
-        <ChevronDown className="pointer-events-none absolute right-1 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+        <ChevronDown className="pointer-events-none absolute right-1 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" />
       </div>
     </div>
   );

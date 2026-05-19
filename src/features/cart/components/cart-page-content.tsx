@@ -123,13 +123,13 @@ export function CartPageContent({ products }: CartPageContentProps) {
           onToggleItem={() => undefined}
         />
 
-        <aside className="h-fit rounded-xl border border-[#e8dfd3] bg-white p-6 shadow-sm">
-          <div className="h-6 w-36 rounded-md bg-[#f5efe5]" />
+        <aside className="h-fit rounded-xl border border-[#e8dfd3] bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-[#141310]">
+          <div className="h-6 w-36 rounded-md bg-[#f5efe5] dark:bg-[#1f1b14]" />
           <div className="mt-5 space-y-3">
             {Array.from({ length: 4 }).map((_, index) => (
               <div
                 key={index}
-                className="h-5 w-full rounded-md bg-[#faf7f1]"
+                className="h-5 w-full rounded-md bg-[#faf7f1] dark:bg-[#1a1916]"
               />
             ))}
           </div>
@@ -140,13 +140,13 @@ export function CartPageContent({ products }: CartPageContentProps) {
 
   return (
     <>
-      <section className="mt-6 rounded-xl border border-[#e8dfd3] bg-white p-5 shadow-sm">
+      <section className="mt-6 rounded-xl border border-[#e8dfd3] bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-[#141310]">
         <div className="flex flex-wrap items-center gap-4">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f4eddf] text-[#9a763d]">
+          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f4eddf] text-[#9a763d] dark:bg-[#1f1b14] dark:text-[#d6b36a]">
             <Truck className="h-5 w-5" aria-hidden="true" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-zinc-950">
+            <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-100">
               {selectedItems.length === 0
                 ? "Select products to see free shipping progress."
                 : remainingForFreeShipping > 0
@@ -155,14 +155,14 @@ export function CartPageContent({ products }: CartPageContentProps) {
                     )} away from free shipping!`
                   : "You've unlocked free shipping!"}
             </p>
-            <div className="mt-2 h-2 w-full rounded-full bg-[#f5efe5]">
+            <div className="mt-2 h-2 w-full rounded-full bg-[#f5efe5] dark:bg-[#1f1b14]">
               <div
                 className="h-2 rounded-full bg-[#c3a06a]"
                 style={{ width: `${freeShippingProgress}%` }}
               />
             </div>
           </div>
-          <p className="text-sm font-semibold text-zinc-950">
+          <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-100">
             {formatCurrency(subtotal)} / {formatCurrency(FREE_SHIPPING_THRESHOLD)}
           </p>
         </div>
@@ -177,35 +177,37 @@ export function CartPageContent({ products }: CartPageContentProps) {
           onToggleItem={toggleItemSelection}
         />
 
-        <aside className="h-fit rounded-xl border border-[#e8dfd3] bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-zinc-950">Order Summary</h2>
-          <div className="mt-5 space-y-3 text-sm text-zinc-600">
+        <aside className="h-fit rounded-xl border border-[#e8dfd3] bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-[#141310]">
+          <h2 className="text-xl font-semibold text-zinc-950 dark:text-zinc-100">
+            Order Summary
+          </h2>
+          <div className="mt-5 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
             <div className="flex items-center justify-between">
               <span>
                 Subtotal ({selectedQuantity}{" "}
                 {selectedQuantity === 1 ? "item" : "items"})
               </span>
-              <span className="font-semibold text-zinc-950">
+              <span className="font-semibold text-zinc-950 dark:text-zinc-100">
                 {formatCurrency(subtotal)}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Shipping</span>
-              <span className="font-semibold text-zinc-950">
+              <span className="font-semibold text-zinc-950 dark:text-zinc-100">
                 {formatCurrency(shipping)}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Tax (estimated)</span>
-              <span className="font-semibold text-zinc-950">
+              <span className="font-semibold text-zinc-950 dark:text-zinc-100">
                 {formatCurrency(tax)}
               </span>
             </div>
           </div>
 
 
-          <div className="mt-6 border-t border-[#eee5d8] pt-4">
-            <div className="flex items-center justify-between text-base font-semibold text-zinc-950">
+          <div className="mt-6 border-t border-[#eee5d8] pt-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between text-base font-semibold text-zinc-950 dark:text-zinc-100">
               <span>Total</span>
               <span>USD {formatCurrency(total)}</span>
             </div>
@@ -215,7 +217,7 @@ export function CartPageContent({ products }: CartPageContentProps) {
             {selectedItems.length > 0 ? (
               <Link
                 href="/checkout"
-                className="block rounded-lg bg-zinc-950 px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-zinc-900"
+                className="block rounded-lg bg-zinc-950 px-4 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-zinc-900 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
               >
                 Proceed to Checkout
               </Link>
@@ -223,14 +225,14 @@ export function CartPageContent({ products }: CartPageContentProps) {
               <button
                 type="button"
                 disabled
-                className="block w-full rounded-lg bg-zinc-300 px-4 py-3 text-center text-sm font-semibold text-zinc-600"
+                className="block w-full rounded-lg bg-zinc-300 px-4 py-3 text-center text-sm font-semibold text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300"
               >
                 Proceed to Checkout
               </button>
             )}
             <Link
               href="/products"
-              className="block rounded-lg border border-[#c3a06a] bg-[#f3eadc] px-4 py-3 text-center text-sm font-semibold text-[#9a763d] transition-colors hover:bg-[#eadcc7]"
+              className="block rounded-lg border border-[#c3a06a] bg-[#f3eadc] px-4 py-3 text-center text-sm font-semibold text-[#9a763d] transition-colors hover:bg-[#eadcc7] dark:border-[#d6b36a] dark:bg-[#201b14] dark:text-[#d6b36a] dark:hover:bg-[#2a241a]"
             >
               Continue Shopping
             </Link>
@@ -240,7 +242,7 @@ export function CartPageContent({ products }: CartPageContentProps) {
             {paymentMethods.map((method) => (
               <span
                 key={method.label}
-                className="inline-flex h-8 min-w-12 items-center justify-center rounded border border-[#e8dfd3] bg-white px-2 shadow-sm"
+                className="inline-flex h-8 min-w-12 items-center justify-center rounded border border-[#e8dfd3] bg-white px-2 shadow-sm dark:border-zinc-800 dark:bg-[#141310]"
               >
                 <Image
                   src={method.src}
@@ -261,13 +263,13 @@ export function CartPageContent({ products }: CartPageContentProps) {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2
               id="cart-recommendations"
-              className="text-2xl font-semibold text-zinc-950"
+              className="text-2xl font-semibold text-zinc-950 dark:text-zinc-100"
             >
               You may also like
             </h2>
             <Link
               href="/products"
-              className="text-sm font-semibold text-zinc-950 underline decoration-[#c3a06a] decoration-2 underline-offset-8 transition-colors hover:text-[#9a763d]"
+              className="text-sm font-semibold text-zinc-950 underline decoration-[#c3a06a] decoration-2 underline-offset-8 transition-colors hover:text-[#9a763d] dark:text-zinc-100 dark:hover:text-[#d6b36a]"
             >
               View all
             </Link>

@@ -51,15 +51,15 @@ export function WishlistContent() {
   };
 
   return (
-    <main className="bg-white">
+    <main className="bg-white dark:bg-[#0f0e0c] dark:text-zinc-100">
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         {/* Top */}
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div>
-            <h1 className="font-serif text-2xl font-medium tracking-tight text-neutral-950 md:text-6xl">
+            <h1 className="font-serif text-2xl font-medium tracking-tight text-neutral-950 md:text-6xl dark:text-zinc-100">
               My Wishlist
             </h1>
-            <p className="mt-3 text-lg text-neutral-600">
+            <p className="mt-3 text-lg text-neutral-600 dark:text-zinc-400">
               {itemCount} {itemCount === 1 ? "item" : "items"}
             </p>
           </div>
@@ -67,7 +67,7 @@ export function WishlistContent() {
           <div className="flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-neutral-300 bg-white px-6 text-sm font-semibold text-neutral-900 transition hover:border-neutral-900 hover:bg-neutral-50"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-neutral-300 bg-white px-6 text-sm font-semibold text-neutral-900 transition hover:border-neutral-900 hover:bg-neutral-50 dark:border-zinc-700 dark:bg-[#141310] dark:text-zinc-100 dark:hover:border-[#d6b36a] dark:hover:bg-[#1a1916]"
             >
               <Share2 className="h-4 w-4" />
               Share Wishlist
@@ -79,8 +79,8 @@ export function WishlistContent() {
               onClick={handleClear}
               className={`inline-flex h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-semibold transition ${
                 itemCount === 0
-                  ? "cursor-not-allowed bg-neutral-200 text-neutral-500"
-                  : "bg-neutral-950 text-white hover:bg-neutral-800"
+                  ? "cursor-not-allowed bg-neutral-200 text-neutral-500 dark:bg-zinc-800 dark:text-zinc-400"
+                  : "bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-[#f4eddf] dark:text-zinc-950 dark:hover:bg-[#e7dccb]"
               }`}
             >
               <Trash2 className="h-4 w-4" />
@@ -90,12 +90,12 @@ export function WishlistContent() {
         </div>
 
         {!mounted ? (
-          <div className="mt-10 overflow-hidden rounded-2xl border border-neutral-200">
-            <div className="h-16 border-b border-neutral-200 bg-white" />
-            <div className="divide-y divide-neutral-200">
+          <div className="mt-10 overflow-hidden rounded-2xl border border-neutral-200 dark:border-zinc-800">
+            <div className="h-16 border-b border-neutral-200 bg-white dark:border-zinc-800 dark:bg-[#141310]" />
+            <div className="divide-y divide-neutral-200 dark:divide-zinc-800">
               {Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="px-6 py-6">
-                  <div className="h-24 w-full rounded-xl bg-[#f7f4ef]" />
+                  <div className="h-24 w-full rounded-xl bg-[#f7f4ef] dark:bg-[#1a1916]" />
                 </div>
               ))}
             </div>
@@ -107,13 +107,13 @@ export function WishlistContent() {
               description="Save your favorite items for quick access later."
               actionLabel="Browse products"
               actionHref="/products"
-              className="border-neutral-200 bg-white text-neutral-950"
+              className="border-neutral-200 bg-white text-neutral-950 dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-100"
             />
           </div>
         ) : (
-          <div className="mt-10 overflow-hidden rounded-2xl border border-neutral-200">
+          <div className="mt-10 overflow-hidden rounded-2xl border border-neutral-200 dark:border-zinc-800">
             {/* Header */}
-            <div className="hidden grid-cols-[56px_1.8fr_0.7fr_0.8fr_1fr] items-center border-b border-neutral-200 bg-white px-6 py-5 text-sm font-medium text-neutral-600 md:grid">
+            <div className="hidden grid-cols-[56px_1.8fr_0.7fr_0.8fr_1fr] items-center border-b border-neutral-200 bg-white px-6 py-5 text-sm font-medium text-neutral-600 md:grid dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-400">
               <div />
               <div>Product</div>
               <div>Price</div>
@@ -122,7 +122,7 @@ export function WishlistContent() {
             </div>
 
             {/* Items */}
-            <div className="divide-y divide-neutral-200">
+            <div className="divide-y divide-neutral-200 dark:divide-zinc-800">
               {displayItems.map((item) => (
                 <div
                   key={item.id}
@@ -132,13 +132,13 @@ export function WishlistContent() {
                   <div className="flex items-start md:items-center">
                     <input
                       type="checkbox"
-                      className="h-5 w-5 rounded border-neutral-300 accent-neutral-900"
+                      className="h-5 w-5 rounded border-neutral-300 accent-neutral-900 dark:border-zinc-700 dark:accent-[#d6b36a]"
                     />
                   </div>
 
                   {/* Product */}
                   <div className="flex gap-4 sm:gap-5">
-                    <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-xl bg-[#f7f4ef] sm:h-32 sm:w-32">
+                    <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-xl bg-[#f7f4ef] sm:h-32 sm:w-32 dark:bg-[#1a1916]">
                       <Image
                         src={safeImage(item.image)}
                         alt={item.title}
@@ -151,7 +151,7 @@ export function WishlistContent() {
                     <div className="flex min-w-0 flex-1 flex-col justify-center">
                       <Link
                         href={`/products/${item.id}`}
-                        className="font-serif text-2xl font-semibold text-neutral-950 transition hover:text-[#b8822e]"
+                        className="font-serif text-2xl font-semibold text-neutral-950 transition hover:text-[#b8822e] dark:text-zinc-100 dark:hover:text-[#d6b36a]"
                       >
                         {item.title}
                       </Link>
@@ -163,12 +163,12 @@ export function WishlistContent() {
                             className="h-4 w-4 fill-[#d89b2b] text-[#d89b2b]"
                           />
                         ))}
-                        <span className="ml-2 text-sm text-neutral-600">
+                        <span className="ml-2 text-sm text-neutral-600 dark:text-zinc-400">
                           ({getReviewCount(item.id)})
                         </span>
                       </div>
 
-                      <p className="mt-2 text-sm text-neutral-500">
+                      <p className="mt-2 text-sm text-neutral-500 dark:text-zinc-400">
                         {item.categoryName ?? "Curated selection"}
                       </p>
                     </div>
@@ -176,15 +176,17 @@ export function WishlistContent() {
 
                   {/* Price */}
                   <div className="md:block">
-                    <p className="text-sm text-neutral-500 md:hidden">Price</p>
-                    <p className="mt-1 text-2xl font-semibold text-neutral-950 md:mt-0 md:text-xl">
+                    <p className="text-sm text-neutral-500 md:hidden dark:text-zinc-400">
+                      Price
+                    </p>
+                    <p className="mt-1 text-2xl font-semibold text-neutral-950 md:mt-0 md:text-xl dark:text-zinc-100">
                       {formatCurrency(item.price)}
                     </p>
                   </div>
 
                   {/* Stock */}
                   <div>
-                    <p className="text-sm text-neutral-500 md:hidden">
+                    <p className="text-sm text-neutral-500 md:hidden dark:text-zinc-400">
                       Stock Status
                     </p>
                     <div className="mt-1 flex items-center gap-2 md:mt-0">
@@ -200,7 +202,7 @@ export function WishlistContent() {
                     <button
                       type="button"
                       onClick={() => handleAddToCart(item)}
-                      className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#ead8c3] px-6 text-sm font-semibold text-neutral-900 transition hover:bg-[#dfc4a6]"
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#ead8c3] px-6 text-sm font-semibold text-neutral-900 transition hover:bg-[#dfc4a6] dark:bg-[#2a241a] dark:text-zinc-100 dark:hover:bg-[#332c21]"
                     >
                       Add to Cart
                       <ShoppingBag className="h-4 w-4" />
@@ -210,7 +212,7 @@ export function WishlistContent() {
                       <button
                         type="button"
                         onClick={() => handleMoveToBag(item)}
-                        className="inline-flex h-11 items-center justify-center rounded-lg border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-900 transition hover:border-neutral-900 hover:bg-neutral-50"
+                        className="inline-flex h-11 items-center justify-center rounded-lg border border-neutral-300 bg-white px-6 text-sm font-medium text-neutral-900 transition hover:border-neutral-900 hover:bg-neutral-50 dark:border-zinc-700 dark:bg-[#141310] dark:text-zinc-100 dark:hover:border-[#d6b36a] dark:hover:bg-[#1a1916]"
                       >
                         Move to Bag
                       </button>
@@ -218,7 +220,7 @@ export function WishlistContent() {
                       <button
                         type="button"
                         onClick={() => handleRemove(item.id)}
-                        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 transition hover:border-neutral-900 hover:text-neutral-950"
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 transition hover:border-neutral-900 hover:text-neutral-950 dark:border-zinc-700 dark:bg-[#141310] dark:text-zinc-300 dark:hover:border-[#d6b36a] dark:hover:text-zinc-100"
                         aria-label={`Remove ${item.title}`}
                       >
                         <X className="h-5 w-5" />

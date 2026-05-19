@@ -41,28 +41,30 @@ export default async function ProductDetailsPage({
   }
 
   return (
-    <div className="bg-[#fffdf8] text-zinc-950">
+    <div className="bg-[#fffdf8] text-zinc-950 dark:bg-[#0f0e0c] dark:text-zinc-100">
       <Container className="py-8 sm:py-10 lg:py-12">
         <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
           <Link
             href="/"
-            className="text-zinc-500 transition-colors hover:text-[#9a763d]"
+            className="text-zinc-500 transition-colors hover:text-[#9a763d] dark:text-zinc-400 dark:hover:text-[#d6b36a]"
           >
             Home
           </Link>
-          <span className="text-[#9a763d]" aria-hidden="true">
+          <span className="text-[#9a763d] dark:text-[#d6b36a]" aria-hidden="true">
             &gt;
           </span>
           <Link
             href="/products"
-            className="text-zinc-500 transition-colors hover:text-[#9a763d]"
+            className="text-zinc-500 transition-colors hover:text-[#9a763d] dark:text-zinc-400 dark:hover:text-[#d6b36a]"
           >
             Shop
           </Link>
-          <span className="text-[#9a763d]" aria-hidden="true">
+          <span className="text-[#9a763d] dark:text-[#d6b36a]" aria-hidden="true">
             &gt;
           </span>
-          <span className="font-medium text-[#9a763d]">{product.title}</span>
+          <span className="font-medium text-[#9a763d] dark:text-[#d6b36a]">
+            {product.title}
+          </span>
         </nav>
 
         <section className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">

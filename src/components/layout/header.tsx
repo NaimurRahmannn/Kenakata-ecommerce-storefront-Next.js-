@@ -14,6 +14,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Container } from "@/components/shared/container";
 import { UserMenu } from "@/components/layout/user-menu";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { useCartStore } from "@/store/cart-store";
 import { useWishlistStore } from "@/store/wishlist-store";
 
@@ -56,8 +57,8 @@ export function Header() {
   };
 
   return (
-    <header className="border-b border-[#e8dfd3] bg-[#fffdf8] text-zinc-950">
-      <div className="bg-zinc-950 px-4 py-2 text-center text-sm text-white">
+    <header className="border-b border-[#e8dfd3] bg-[#fffdf8] text-zinc-950 dark:border-zinc-800 dark:bg-[#11100e] dark:text-zinc-100">
+      <div className="bg-zinc-950 px-4 py-2 text-center text-sm text-white dark:bg-black">
         <div className="relative mx-auto max-w-7xl">
           <p className="flex items-center justify-center gap-2">
             <Truck className="h-4 w-4" color="#9a763d" aria-hidden="true" />
@@ -99,7 +100,7 @@ export function Header() {
               <Link
                 href="/wishlist"
                 aria-label={`Wishlist (${displayWishlistCount} items)`}
-                className="relative rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]"
+                className="relative rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] dark:text-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-[#d6b36a] dark:focus-visible:ring-[#d6b36a]"
               >
                 <Heart className="h-5 w-5" aria-hidden="true" />
                 <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#b88a39] px-1 text-[10px] font-semibold leading-none text-white">
@@ -109,20 +110,21 @@ export function Header() {
               <Link
                 href="/cart"
                 aria-label={`View cart (${displayCartCount} items)`}
-                className="relative rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]"
+                className="relative rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] dark:text-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-[#d6b36a] dark:focus-visible:ring-[#d6b36a]"
               >
                 <ShoppingCart className="h-5 w-5" aria-hidden="true" />
                 <span className="absolute right-0 top-0 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#b88a39] px-1 text-[10px] font-semibold leading-none text-white">
                   {displayCartCount}
                 </span>
               </Link>
+              <ThemeToggle />
               <UserMenu />
               {isShopPage && (
                 <button
                   type="button"
                   onClick={openFilters}
                   aria-label="Open filters"
-                  className="rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] lg:hidden"
+                  className="rounded-full p-2 text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] dark:text-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-[#d6b36a] dark:focus-visible:ring-[#d6b36a] lg:hidden"
                 >
                   <SlidersHorizontal className="h-5 w-5" aria-hidden="true" />
                 </button>
@@ -130,15 +132,15 @@ export function Header() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-[#eadfce] pt-3 sm:gap-x-7 md:justify-start lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-x-8 lg:border-t-0 lg:pt-0">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-[#eadfce] pt-3 sm:gap-x-7 md:justify-start lg:col-start-2 lg:row-start-1 lg:justify-center lg:gap-x-8 lg:border-t-0 lg:pt-0 dark:border-zinc-800">
             {navigationLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="group relative text-sm font-medium text-zinc-800 transition-colors hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] focus-visible:ring-offset-4 focus-visible:ring-offset-[#fffdf8]"
+                className="group relative text-sm font-medium text-zinc-800 transition-colors hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] focus-visible:ring-offset-4 focus-visible:ring-offset-[#fffdf8] dark:text-zinc-200 dark:hover:text-[#d6b36a] dark:focus-visible:ring-[#d6b36a] dark:focus-visible:ring-offset-[#11100e]"
               >
                 {link.label}
-                <span className="absolute -bottom-2 left-0 h-px w-0 bg-[#b88a39] transition-all group-hover:w-full" />
+                <span className="absolute -bottom-2 left-0 h-px w-0 bg-[#b88a39] transition-all group-hover:w-full dark:bg-[#d6b36a]" />
               </Link>
             ))}
           </div>

@@ -14,7 +14,7 @@ export function ProductGrid({ products }: ProductGridProps) {
         description="Please check back soon for our latest collection."
         actionLabel="Back to home"
         actionHref="/"
-        className="min-h-96 border-[#eadfce] bg-[#faf7f1] text-zinc-950"
+        className="min-h-96 border-[#eadfce] bg-[#faf7f1] text-zinc-950 dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-100"
       />
     );
   }

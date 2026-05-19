@@ -19,7 +19,7 @@ interface ButtonLinkProps
 
 const variantStyles: Record<ButtonVariant, string> = {
   default:
-    "bg-zinc-950 text-white hover:bg-zinc-800 active:bg-zinc-900 disabled:opacity-50 disabled:cursor-not-allowed",
+    "bg-zinc-950 text-white hover:bg-zinc-800 active:bg-zinc-900 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200",
   outline:
     "border border-zinc-300 text-zinc-950 hover:bg-zinc-50 active:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-900",
   ghost:

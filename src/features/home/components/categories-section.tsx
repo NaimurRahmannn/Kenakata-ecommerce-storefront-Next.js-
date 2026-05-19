@@ -60,7 +60,7 @@ function CategoryCard({ category }: { category: Category }) {
       href={getCategoryHref(category)}
       className="group flex flex-col items-center text-center"
     >
-      <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#eadfce] bg-[#f3ede3] shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#c3a06a] group-hover:shadow-md group-hover:shadow-zinc-900/10 sm:h-18 sm:w-18">
+      <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#eadfce] bg-[#f3ede3] shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#c3a06a] group-hover:shadow-md group-hover:shadow-zinc-900/10 sm:h-18 sm:w-18 dark:border-zinc-800 dark:bg-[#1a1916] dark:group-hover:border-[#d6b36a]">
         <Image
           src={safeImage(category.image)}
           alt={category.name}
@@ -70,7 +70,7 @@ function CategoryCard({ category }: { category: Category }) {
           unoptimized
         />
       </span>
-      <span className="mt-3 text-xs font-medium text-zinc-950 transition-colors group-hover:text-[#9a763d] sm:text-sm">
+      <span className="mt-3 text-xs font-medium text-zinc-950 transition-colors group-hover:text-[#9a763d] sm:text-sm dark:text-zinc-100 dark:group-hover:text-[#d6b36a]">
         {category.name}
       </span>
     </Link>
@@ -97,7 +97,7 @@ export async function CategoriesSection() {
   }
 
   return (
-    <section className="border-y border-[#e8dfd3] bg-[#fffdf8] pb-8 pt-6 sm:pb-9 sm:pt-7 lg:pb-10 lg:pt-8">
+    <section className="border-y border-[#e8dfd3] bg-[#fffdf8] pb-8 pt-6 sm:pb-9 sm:pt-7 lg:pb-10 lg:pt-8 dark:border-zinc-800 dark:bg-[#11100e]">
       <Container>
         <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[#9a763d] sm:text-sm">
           BROWSE CATEGORIES
@@ -115,7 +115,7 @@ export async function CategoriesSection() {
             description="Please check back soon for new collections."
             actionLabel="Browse products"
             actionHref="/products"
-            className="mt-6 border-[#eadfce] bg-[#faf7f1] text-zinc-950"
+            className="mt-6 border-[#eadfce] bg-[#faf7f1] text-zinc-950 dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-100"
           />
         )}
       </Container>

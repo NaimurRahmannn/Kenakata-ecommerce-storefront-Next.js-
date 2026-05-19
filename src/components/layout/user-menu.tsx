@@ -13,10 +13,10 @@ import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth-store";
 
 const iconButtonClasses =
-  "inline-flex h-9 w-9 items-center justify-center rounded-full text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]";
+  "inline-flex h-9 w-9 items-center justify-center rounded-full text-zinc-900 transition-colors hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] dark:text-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-[#d6b36a] dark:focus-visible:ring-[#d6b36a]";
 
 const menuItemClasses =
-  "flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-zinc-900 transition hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d]";
+  "flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-zinc-900 transition hover:bg-[#f4eddf] hover:text-[#a77a2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a77a2d] dark:text-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-[#d6b36a] dark:focus-visible:ring-[#d6b36a]";
 
 const getInitials = (name?: string, email?: string) => {
   const source = name?.trim() || email?.trim() || "";
@@ -120,32 +120,32 @@ export function UserMenu() {
       {isOpen ? (
         <div
           role="menu"
-          className="absolute right-0 z-40 mt-2 w-72 rounded-xl border border-[#eadfce] bg-[#fffdf8] p-3 text-zinc-900 shadow-[0_12px_30px_rgba(0,0,0,0.12)]"
+          className="absolute right-0 z-40 mt-2 w-72 rounded-xl border border-[#eadfce] bg-[#fffdf8] p-3 text-zinc-900 shadow-[0_12px_30px_rgba(0,0,0,0.12)] dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-100"
         >
-          <div className="flex items-center gap-3 border-b border-[#eadfce] pb-3">
+          <div className="flex items-center gap-3 border-b border-[#eadfce] pb-3 dark:border-zinc-800">
             {avatarUrl ? (
               <div
-                className="h-11 w-11 rounded-full bg-[#f4eddf] bg-cover bg-center"
+                className="h-11 w-11 rounded-full bg-[#f4eddf] bg-cover bg-center dark:bg-[#1f1b14]"
                 style={{ backgroundImage: `url('${avatarUrl}')` }}
                 aria-hidden="true"
               />
             ) : (
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#f4eddf] text-sm font-semibold text-[#a77a2d]">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#f4eddf] text-sm font-semibold text-[#a77a2d] dark:bg-[#1f1b14] dark:text-[#d6b36a]">
                 {initials}
               </div>
             )}
 
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-zinc-900">
+              <p className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                 {displayName}
               </p>
               {displayEmail ? (
-                <p className="truncate text-xs text-zinc-600">
+                <p className="truncate text-xs text-zinc-600 dark:text-zinc-400">
                   {displayEmail}
                 </p>
               ) : null}
               {displayRole ? (
-                <p className="mt-1 text-[11px] uppercase tracking-wide text-[#a77a2d]">
+                <p className="mt-1 text-[11px] uppercase tracking-wide text-[#a77a2d] dark:text-[#d6b36a]">
                   {displayRole}
                 </p>
               ) : null}
@@ -173,7 +173,7 @@ export function UserMenu() {
             </Link>
           </div>
 
-          <div className="mt-3 border-t border-[#eadfce] pt-3">
+          <div className="mt-3 border-t border-[#eadfce] pt-3 dark:border-zinc-800">
             <button
               type="button"
               onClick={handleLogout}

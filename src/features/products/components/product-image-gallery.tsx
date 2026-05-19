@@ -35,8 +35,10 @@ export function ProductImageGallery({ images, title }: ProductImageGalleryProps)
               key={`${image}-${index}`}
               type="button"
               onClick={() => setSelectedImage(src)} // ← update on click
-              className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border bg-white transition-colors hover:border-[#c3a06a] ${
-                isActive ? "border-[#c3a06a]" : "border-[#e8dfd3]"  // ← active border
+              className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border bg-white transition-colors hover:border-[#c3a06a] dark:bg-[#141310] dark:hover:border-[#d6b36a] ${
+                isActive
+                  ? "border-[#c3a06a] dark:border-[#d6b36a]"
+                  : "border-[#e8dfd3] dark:border-zinc-800"  // ← active border
               }`}
             >
               <Image
@@ -53,7 +55,7 @@ export function ProductImageGallery({ images, title }: ProductImageGalleryProps)
       </div>
 
       {/* Main image */}
-      <div className="order-1 overflow-hidden rounded-xl border border-[#e8dfd3] bg-[#faf7f1] p-6 shadow-sm">
+      <div className="order-1 overflow-hidden rounded-xl border border-[#e8dfd3] bg-[#faf7f1] p-6 shadow-sm dark:border-zinc-800 dark:bg-[#1a1916]">
         <div className="relative aspect-[4/5]">
           <Image
             src={selectedImage} // ← use selectedImage here

@@ -220,30 +220,32 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   );
 
   return (
-    <div className="bg-[#fffdf8] text-zinc-950">
+    <div className="bg-[#fffdf8] text-zinc-950 dark:bg-[#0f0e0c] dark:text-zinc-100">
       <Container className="py-8 sm:py-9 lg:py-10">
         <section aria-labelledby="shop-title">
           <h1
             id="shop-title"
-            className="mt-4 text-5xl font-medium tracking-tight text-zinc-950 sm:text-6xl"
+            className="mt-4 text-5xl font-medium tracking-tight text-zinc-950 sm:text-6xl dark:text-zinc-100"
           >
             Shop
           </h1>
           <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
             <Link
               href="/"
-              className="text-zinc-500 transition-colors hover:text-[#9a763d]"
+              className="text-zinc-500 transition-colors hover:text-[#9a763d] dark:text-zinc-400 dark:hover:text-[#d6b36a]"
             >
               Home
             </Link>
-            <span className="text-[#9a763d]" aria-hidden="true">
+            <span className="text-[#9a763d] dark:text-[#d6b36a]" aria-hidden="true">
               &gt;
             </span>
-            <span className="font-medium text-[#9a763d]">Shop</span>
+            <span className="font-medium text-[#9a763d] dark:text-[#d6b36a]">
+              Shop
+            </span>
           </nav>
         </section>
 
-        <section className="relative mt-6 overflow-hidden rounded-lg border border-[#e8dfd3] bg-[#faf7f1] shadow-sm">
+        <section className="relative mt-6 overflow-hidden rounded-lg border border-[#e8dfd3] bg-[#faf7f1] shadow-sm dark:border-zinc-800 dark:bg-[#141310]">
           <Image
             src="/images/hero-img.png"
             alt=""
@@ -252,17 +254,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             sizes="100vw"
             className="absolute inset-0 object-cover object-[78%_center]"
           />
-          <div className="absolute inset-0 bg-linear-to-r from-[#faf7f1] via-[#faf7f1]/92 to-[#faf7f1]/8" />
+          <div className="absolute inset-0 bg-linear-to-r from-[#faf7f1] via-[#faf7f1]/92 to-[#faf7f1]/8 dark:from-[#11100e] dark:via-[#11100e]/90 dark:to-[#11100e]/15" />
 
           <div className="relative flex min-h-44 items-center p-6 sm:p-8 lg:min-h-46 lg:p-9">
             <div className="max-w-xl">
-              <p className="text-sm font-medium text-zinc-950">
+              <p className="text-sm font-medium text-zinc-950 dark:text-zinc-100">
                 Discover our premium collection
               </p>
-              <h2 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-zinc-950 sm:text-5xl">
+              <h2 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-100">
                 Quality. Style. Value.
               </h2>
-              <p className="mt-3 text-base leading-7 text-zinc-600">
+              <p className="mt-3 text-base leading-7 text-zinc-600 dark:text-zinc-300">
                 Handpicked products, just for you.
               </p>
             </div>
@@ -273,9 +275,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           className="mt-6 grid gap-6 lg:grid-cols-[260px_1fr]"
           aria-label="Shop content"
         >
-          <aside className="hidden h-fit overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm lg:block">
-            <div className="flex items-center justify-between border-b border-[#eee5d8] px-4 py-3">
-              <h2 className="inline-flex items-center gap-2 text-base font-semibold text-zinc-950">
+          <aside className="hidden h-fit overflow-hidden rounded-lg border border-[#e8dfd3] bg-white shadow-sm lg:block dark:border-zinc-800 dark:bg-[#141310]">
+            <div className="flex items-center justify-between border-b border-[#eee5d8] px-4 py-3 dark:border-zinc-800">
+              <h2 className="inline-flex items-center gap-2 text-base font-semibold text-zinc-950 dark:text-zinc-100">
                 <SlidersHorizontal className="h-4 w-4 text-[#9a763d]" />
                 Filters
               </h2>
@@ -289,7 +291,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <form
                 action="/products"
                 method="get"
-                className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm"
+                className="flex items-center gap-3 rounded-lg border border-[#ded4c5] bg-white px-4 py-3 text-sm text-zinc-700 shadow-sm dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-300"
               >
                 {sortQuery && (
                   <input type="hidden" name="sort" value={sortQuery} />
@@ -303,14 +305,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     <input type="hidden" name="max" value={rangeMax} />
                   </>
                 )}
-                <Search className="h-5 w-5 text-zinc-950" />
+                <Search className="h-5 w-5 text-zinc-950 dark:text-zinc-100" />
                 <input
                   type="search"
                   name="q"
                   defaultValue={searchTerm}
                   placeholder="Search products..."
                   aria-label="Search products"
-                  className="w-full bg-transparent text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none"
+                  className="w-full bg-transparent text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500"
                 />
                 <button type="submit" className="sr-only">
                   Search
@@ -336,8 +338,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   aria-disabled={currentPage === 1}
                   className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
                     currentPage === 1
-                      ? "cursor-not-allowed border-[#e8dfd3] text-zinc-300"
-                      : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d]"
+                      ? "cursor-not-allowed border-[#e8dfd3] text-zinc-300 dark:border-zinc-800 dark:text-zinc-600"
+                      : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d] dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-[#d6b36a] dark:hover:text-[#d6b36a]"
                   }`}
                 >
                   Previous
@@ -350,8 +352,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     aria-current={pageNumber === currentPage ? "page" : undefined}
                     className={`h-9 min-w-9 rounded-full border text-center text-sm font-medium leading-9 transition-colors ${
                       pageNumber === currentPage
-                        ? "border-[#c3a06a] bg-[#f3eadc] text-[#9a763d]"
-                        : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d]"
+                        ? "border-[#c3a06a] bg-[#f3eadc] text-[#9a763d] dark:border-[#d6b36a] dark:bg-[#251f16] dark:text-[#d6b36a]"
+                        : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d] dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-[#d6b36a] dark:hover:text-[#d6b36a]"
                     }`}
                   >
                     {pageNumber}
@@ -363,8 +365,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   aria-disabled={currentPage === totalPages}
                   className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
                     currentPage === totalPages
-                      ? "cursor-not-allowed border-[#e8dfd3] text-zinc-300"
-                      : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d]"
+                      ? "cursor-not-allowed border-[#e8dfd3] text-zinc-300 dark:border-zinc-800 dark:text-zinc-600"
+                      : "border-[#ded4c5] text-zinc-700 hover:border-[#c3a06a] hover:text-[#9a763d] dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-[#d6b36a] dark:hover:text-[#d6b36a]"
                   }`}
                 >
                   Next

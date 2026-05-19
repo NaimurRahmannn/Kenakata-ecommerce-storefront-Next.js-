@@ -54,13 +54,13 @@ export function RegisterForm() {
       <div>
         <label
           htmlFor="name"
-          className="mb-2 block text-sm font-medium text-neutral-900"
+          className="mb-2 block text-sm font-medium text-neutral-900 dark:text-zinc-100"
         >
           Full Name
         </label>
 
         <div className="relative">
-          <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+          <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 dark:text-zinc-400" />
 
           <input
             id="name"
@@ -69,7 +69,7 @@ export function RegisterForm() {
             placeholder="Enter your full name"
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "name-error" : undefined}
-            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-4 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 ${
+            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-4 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 dark:border-zinc-700 dark:bg-[#151310] dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-[#d6b36a] ${
               errors.name
                 ? "border-rose-500 focus:border-rose-500"
                 : "border-neutral-300"
@@ -89,13 +89,13 @@ export function RegisterForm() {
       <div>
         <label
           htmlFor="email"
-          className="mb-2 block text-sm font-medium text-neutral-900"
+          className="mb-2 block text-sm font-medium text-neutral-900 dark:text-zinc-100"
         >
           Email Address
         </label>
 
         <div className="relative">
-          <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+          <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 dark:text-zinc-400" />
 
           <input
             id="email"
@@ -104,7 +104,7 @@ export function RegisterForm() {
             placeholder="Enter your email address"
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
-            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-4 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 ${
+            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-4 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 dark:border-zinc-700 dark:bg-[#151310] dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-[#d6b36a] ${
               errors.email
                 ? "border-rose-500 focus:border-rose-500"
                 : "border-neutral-300"
@@ -124,13 +124,13 @@ export function RegisterForm() {
       <div>
         <label
           htmlFor="password"
-          className="mb-2 block text-sm font-medium text-neutral-900"
+          className="mb-2 block text-sm font-medium text-neutral-900 dark:text-zinc-100"
         >
           Password
         </label>
 
         <div className="relative">
-          <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+          <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 dark:text-zinc-400" />
 
           <input
             id="password"
@@ -139,7 +139,7 @@ export function RegisterForm() {
             placeholder="Create a password"
             aria-invalid={Boolean(errors.password)}
             aria-describedby={errors.password ? "password-error" : undefined}
-            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-11 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 ${
+            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-11 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 dark:border-zinc-700 dark:bg-[#151310] dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-[#d6b36a] ${
               errors.password
                 ? "border-rose-500 focus:border-rose-500"
                 : "border-neutral-300"
@@ -150,7 +150,7 @@ export function RegisterForm() {
           <button
             type="button"
             aria-label="Show password"
-            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 transition hover:text-neutral-900"
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 transition hover:text-neutral-900 dark:text-zinc-400 dark:hover:text-zinc-100"
           >
             <EyeOff className="h-4 w-4" />
           </button>
@@ -162,7 +162,7 @@ export function RegisterForm() {
           </p>
         ) : null}
 
-        <p className="mt-1.5 text-xs text-neutral-500">
+        <p className="mt-1.5 text-xs text-neutral-500 dark:text-zinc-400">
           Must be at least 6 characters long
         </p>
       </div>
@@ -171,13 +171,13 @@ export function RegisterForm() {
       <div>
         <label
           htmlFor="confirmPassword"
-          className="mb-2 block text-sm font-medium text-neutral-900"
+          className="mb-2 block text-sm font-medium text-neutral-900 dark:text-zinc-100"
         >
           Confirm Password
         </label>
 
         <div className="relative">
-          <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+          <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 dark:text-zinc-400" />
 
           <input
             id="confirmPassword"
@@ -188,7 +188,7 @@ export function RegisterForm() {
             aria-describedby={
               errors.confirmPassword ? "confirm-password-error" : undefined
             }
-            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-11 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 ${
+            className={`h-11 w-full rounded-lg border bg-white pl-10 pr-11 text-sm text-neutral-900 outline-none transition placeholder:text-neutral-400 focus:border-neutral-900 dark:border-zinc-700 dark:bg-[#151310] dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-[#d6b36a] ${
               errors.confirmPassword
                 ? "border-rose-500 focus:border-rose-500"
                 : "border-neutral-300"
@@ -199,7 +199,7 @@ export function RegisterForm() {
           <button
             type="button"
             aria-label="Show confirm password"
-            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 transition hover:text-neutral-900"
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-500 transition hover:text-neutral-900 dark:text-zinc-400 dark:hover:text-zinc-100"
           >
             <EyeOff className="h-4 w-4" />
           </button>
@@ -216,23 +216,23 @@ export function RegisterForm() {
       </div>
 
       {/* Terms */}
-      <label className="flex items-start gap-2 text-xs leading-5 text-neutral-700">
+      <label className="flex items-start gap-2 text-xs leading-5 text-neutral-700 dark:text-zinc-400">
         <input
           type="checkbox"
-          className="mt-1 h-4 w-4 rounded border-neutral-300 accent-neutral-950"
+          className="mt-1 h-4 w-4 rounded border-neutral-300 accent-neutral-950 dark:border-zinc-700 dark:accent-[#d6b36a]"
         />
         <span>
           I agree to the{" "}
           <Link
             href="/terms"
-            className="font-semibold text-[#a46d1e] transition hover:text-neutral-950"
+            className="font-semibold text-[#a46d1e] transition hover:text-neutral-950 dark:text-[#d6b36a] dark:hover:text-zinc-100"
           >
             Terms & Conditions
           </Link>{" "}
           and{" "}
           <Link
             href="/privacy-policy"
-            className="font-semibold text-[#a46d1e] transition hover:text-neutral-950"
+            className="font-semibold text-[#a46d1e] transition hover:text-neutral-950 dark:text-[#d6b36a] dark:hover:text-zinc-100"
           >
             Privacy Policy
           </Link>
@@ -243,12 +243,12 @@ export function RegisterForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="h-11 w-full rounded-lg bg-neutral-950 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-70"
+        className="h-11 w-full rounded-lg bg-neutral-950 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-[#f4eddf] dark:text-zinc-950 dark:hover:bg-[#e7dccb]"
       >
         {isSubmitting ? "Creating account..." : "Create Account"}
       </button>
 
-      <p className="text-center text-xs text-neutral-500">
+      <p className="text-center text-xs text-neutral-500 dark:text-zinc-400">
         After creating your account, sign in with your email and password.
       </p>
     </form>

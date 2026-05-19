@@ -49,7 +49,7 @@ export function FiltersDrawer({
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 rounded-lg border border-[#ded4c5] bg-white px-3 py-3 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:border-[#c3a06a] hover:text-[#9a763d]"
+          className="flex items-center gap-2 rounded-lg border border-[#ded4c5] bg-white px-3 py-3 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:border-[#c3a06a] hover:text-[#9a763d] dark:border-zinc-800 dark:bg-[#141310] dark:text-zinc-300 dark:hover:border-[#d6b36a] dark:hover:text-[#d6b36a]"
           aria-expanded={isOpen}
           aria-controls="filters-drawer"
         >
@@ -71,14 +71,16 @@ export function FiltersDrawer({
             role="dialog"
             aria-modal="true"
             aria-label="Filters"
-            className="absolute right-0 top-0 h-full w-full max-w-sm overflow-y-auto bg-white shadow-xl"
+            className="absolute right-0 top-0 h-full w-full max-w-sm overflow-y-auto bg-white shadow-xl dark:bg-[#141310]"
           >
-            <div className="flex items-center justify-between border-b border-[#eee5d8] px-4 py-4">
-              <h2 className="text-base font-semibold text-zinc-950">Filters</h2>
+            <div className="flex items-center justify-between border-b border-[#eee5d8] px-4 py-4 dark:border-zinc-800">
+              <h2 className="text-base font-semibold text-zinc-950 dark:text-zinc-100">
+                Filters
+              </h2>
               <button
                 type="button"
                 onClick={closeDrawer}
-                className="rounded-full p-1 text-zinc-500 transition-colors hover:text-[#9a763d]"
+                className="rounded-full p-1 text-zinc-500 transition-colors hover:text-[#9a763d] dark:text-zinc-400 dark:hover:text-[#d6b36a]"
                 aria-label="Close filters"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
